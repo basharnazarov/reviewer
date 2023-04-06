@@ -15,7 +15,7 @@ function Register() {
 
     const handleRegister = () => {
         axios
-            .post("https://webapp4-0tik.onrender.com/register", {
+            .post(`${process.env.REACT_APP_BASE_URL}/register`, {
                 email: details.email,
                 username: details.username,
                 password: details.password,

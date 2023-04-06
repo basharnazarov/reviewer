@@ -7,8 +7,9 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
     const login = (user) => {
+        console.log(`${process.env.REACT_APP_BASE_URL}`);
         axios
-            .post("https://webapp4-0tik.onrender.com/login", {
+            .post(`${process.env.REACT_APP_BASE_URL}/login`, {
                 username: user.username,
                 password: user.password,
             })

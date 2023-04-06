@@ -16,7 +16,7 @@ function Login(props) {
     const handleLogin = (e) => {
         e.preventDefault();
         auth.login(details);
-        navigate("/");
+        navigate("/admin");
     };
 
     return (

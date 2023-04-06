@@ -53,7 +53,7 @@ function Admin() {
         const selected = handleFilter(users);
         selected?.forEach((user) => {
             axios
-                .post("https://webapp4-0tik.onrender.com/block", {
+                .post(`${process.env.REACT_APP_BASE_URL}/block`, {
                     username: user?.username,
                 })
                 .then((response) => {
@@ -70,7 +70,7 @@ function Admin() {
         const selected = handleFilter(users);
         selected?.forEach((user) => {
             axios
-                .post("https://webapp4-0tik.onrender.com/unblock", {
+                .post(`${process.env.REACT_APP_BASE_URL}/unblock`, {
                     username: user?.username,
                 })
                 .then((response) => {
@@ -87,7 +87,7 @@ function Admin() {
         const selected = handleFilter(users);
         selected?.forEach((user) => {
             axios
-                .post("https://webapp4-0tik.onrender.com/delete", {
+                .post(`${process.env.REACT_APP_BASE_URL}/delete`, {
                     username: user?.username,
                 })
                 .then((response) => {
@@ -102,7 +102,7 @@ function Admin() {
 
     const fetchData = async () => {
         const result = await axios
-            .get("https://webapp4-0tik.onrender.com/users")
+            .get(`${process.env.REACT_APP_BASE_URL}/users`)
             .then((response) => {
                 if (response.data.message) {
                     console.log(response.data.message);
