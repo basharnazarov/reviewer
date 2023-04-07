@@ -15,13 +15,11 @@ function Register() {
 
     const handleRegister = () => {
         axios
-            .post(`${process.env.REACT_APP_BASE_URL}/register`, {
+            .post(`${process.env.REACT_APP_BASE_URL}/registerMember`, {
                 email: details.email,
                 username: details.username,
                 password: details.password,
-                status: "active",
-                registerTime: new Date(),
-                lastLoginTime: new Date(),
+               
             })
             .then((response) => {
                 if (response.data.message) {
@@ -30,7 +28,7 @@ function Register() {
                     navigate("/");
                 }
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.error(err));
     };
     return (
         <div style={{ marginTop: "5%" }}>

@@ -2,8 +2,11 @@ import React from "react";
 import MainLayout from "../layouts/MainLayout";
 import { Box, Typography, Paper } from "@mui/material";
 import ReviewCard from "../components/ReviewCard";
+import Chip from '@mui/material/Chip';
+import { useNavigate } from "react-router-dom";
 
 function Homepage() {
+    const navigate = useNavigate();
     const tags = [
         "movies",
         "books",
@@ -26,7 +29,7 @@ function Homepage() {
         "Forest Gump",
     ];
 
-    const images = ['https://www.dropbox.com/s/3rdzhzy76h9bmk8/reviewer.png?raw=1', 'https://www.dropbox.com/s/ncyb0qbgt3dg67h/avengers.jpg?raw=1']
+    const images = ['https://www.dropbox.com/s/3rdzhzy76h9bmk8/reviewer.png?raw=1', 'https://www.dropbox.com/s/ncyb0qbgt3dg67h/avengers.jpg?raw=1', 'https://www.dropbox.com/s/2we1xngtno7004r/godofwar.jpg?raw=1', 'https://www.dropbox.com/s/xr9eom0uq60v4ca/harrypotter.jpg?raw=1']
     return (
         <MainLayout>
             <Box sx={{ display: "flex", columnGap: "10px" }}>
@@ -61,17 +64,7 @@ function Homepage() {
                     >
                         {tags.map((item) => {
                             return (
-                                <Box
-                                    key={item}
-                                    sx={{
-                                        background: "#ddd",
-                                        height: "25px",
-                                        p: "2px",
-                                        borderRadius: "5px",
-                                    }}
-                                >
-                                    {item}
-                                </Box>
+                                <Chip label={item} clickable/>
                             );
                         })}
                     </Paper>
@@ -93,8 +86,13 @@ function Homepage() {
                                             height: "25px",
                                             p: "2px",
                                             borderRadius: "5px",
-                                            mb:'3px'
+                                            mb:'3px',
+                                            "&:hover":{
+                                                cursor:'pointer',
+                                                opacity:'0.8'
+                                            }
                                         }}
+                                        onClick={()=>navigate('/review')}
                                     >
                                         {index+1}. {item}
                                     </Typography>
