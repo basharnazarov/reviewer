@@ -1,33 +1,72 @@
-import { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext } from "react";
 import axios from "axios";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+    const localData = JSON.parse(localStorage.getItem("auth"));
+    const [userData, setUserData] = useState(localData);
 
     const login = (user) => {
-        console.log(`${process.env.REACT_APP_BASE_URL}`);
         axios
-            .post(`${process.env.REACT_APP_BASE_URL}/login`, {
+            .post(`${process.env.REACT_APP_BASE_URL}/loginMember`, {
                 username: user.username,
                 password: user.password,
             })
             .then((response) => {
                 if (response.data.message) {
-                    console.log(response.data.message);
+                    console.log(response);
                 } else {
-                    setUser(response.data[0]);
+                    localStorage.setItem("auth", JSON.stringify(response.data));
+                    const localData = JSON.parse(localStorage.getItem("auth"));
+                    setUserData(localData);
                 }
             });
     };
 
     const logout = () => {
-        setUser(null);
+        console.log('check')
+        localStorage.clear();
+        window.open("http://localhost:5000/auth/logout", "_self");
+        setUserData(null);
     };
 
+    React.useEffect(() => {
+        const getUser = () => {
+            fetch(`${process.env.REACT_APP_BASE_URL}/auth/login/success`, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Credentials": true,
+                },
+            })
+                .then((response) => {
+                    if (response.status === 200) return response.json();
+                    throw new Error("Authentication failed!");
+                })
+                .then((resObject) => {
+                    localStorage.setItem(
+                        "auth",
+                        JSON.stringify(resObject.user)
+                    );
+                    const localData = JSON.parse(localStorage.getItem("auth"));
+                    setUserData(localData);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+        getUser();
+    }, []);
+
+    React.useEffect(() => {
+        console.log(userData);
+    }, [userData]);
+
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user: userData, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

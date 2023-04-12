@@ -4,8 +4,8 @@ import Login from "../pages/Login";
 import { useAuth } from "../auth/auth";
 
 const RequireAuth = () => {
-    const isAuth = useAuth();
-    return isAuth.user ? <Outlet /> : <Login />;
+    const auth = useAuth()
+    return auth.user?.token ? <Outlet /> : <Login />;
 };
 
 export default RequireAuth;

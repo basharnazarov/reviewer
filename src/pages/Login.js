@@ -5,28 +5,49 @@ import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/auth";
+import GoogleIcon from "@mui/icons-material/Google";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
+import GitHubIcon from '@mui/icons-material/GitHub';
 
-
-function Login(props) {
+function Login() {
     const [details, setDetails] = React.useState({
         username: "",
         password: "",
     });
     const auth = useAuth();
     const navigate = useNavigate();
+
+    const handleGoogleAuth = () => {
+        window.open("http://localhost:5000/auth/google", "_self");
+    };
+
+    const handleFacebookLogin = () => {
+        window.open("http://localhost:5000/auth/facebook", "_self");
+      };
+
+    const handleGithubLogin = () => {
+        window.open("http://localhost:5000/auth/github", "_self");
+      };
+
     const handleLogin = (e) => {
         e.preventDefault();
         auth.login(details);
-        navigate("/admin");
     };
+    React.useEffect(() => {
+        if (auth?.user !== null) {
+            navigate("/");
+        }
+    }, [auth?.user]);
 
     return (
         <div style={{ marginTop: "5%" }}>
             <Paper
                 elavation={3}
                 style={{
-                    maxWidth: "300px",
-                    height: "300px",
+                    maxWidth: "400px",
+                    height: "400px",
                     margin: "auto",
                     display: "flex",
                     alignItems: "center",
@@ -38,6 +59,8 @@ function Login(props) {
                         display: "flex",
                         flexDirection: "column",
                         rowGap: "25px",
+                       
+
                     }}
                 >
                     <TextField
@@ -64,15 +87,36 @@ function Login(props) {
                     >
                         Login
                     </Button>
+                    <Box>
+                        <Stack
+                            direction="row"
+                            spacing={1}
+                            sx={{ display: "flex", alignItems: "center", justifyContent:'center' }}
+                        >
+                            <Typography>Sign in with:</Typography>
+                            <IconButton color="primary" onClick={handleGoogleAuth}>
+                                <GoogleIcon />
+                            </IconButton>
+                            
+                            <IconButton color="primary" disabled>
+                                <FacebookIcon onClick={handleFacebookLogin}/>
+                            </IconButton>
+                            <IconButton color="primary">
+                                <GitHubIcon onClick={handleGithubLogin}/>
+                            </IconButton>
+                        </Stack>
+                    </Box>
+
                     <Typography>
-                        Not registered?{" "}
+                       Not a member?{" "}
                         <Button
                             component={Link}
                             to="/register"
                             variant="outlined"
                             size="small"
+                            sx={{ml:'20px'}}
                         >
-                            Register
+                            Create an account
                         </Button>
                     </Typography>
                 </Box>

@@ -15,7 +15,7 @@ function Register() {
 
     const handleRegister = () => {
         axios
-            .post(`${process.env.REACT_APP_BASE_URL}/registerMember`, {
+            .post(`${process.env.REACT_APP_BASE_URL}/createMember`, {
                 email: details.email,
                 username: details.username,
                 password: details.password,

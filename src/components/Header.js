@@ -17,10 +17,12 @@ import Menu from "@mui/material/Menu";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Logout from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useAuth } from "../auth/auth";
 
 function Header() {
     const navigate = useNavigate();
     const theme = useTheme();
+    const auth = useAuth();
     const [language, setLanguage] = React.useState(1);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -33,6 +35,11 @@ function Header() {
     const handleChange = (event) => {
         setLanguage(event.target.value);
     };
+
+    // const handleLogout = () => {
+    //     window.open("http://localhost:5000/auth/logout", "_self");
+    // };
+
     return (
         <Box
             sx={{
@@ -50,7 +57,7 @@ function Header() {
                 variant="h6"
                 fontWeight={600}
                 onClick={() => navigate("/")}
-                sx={{'&:hover':{cursor:'pointer'}}}
+                sx={{ "&:hover": { cursor: "pointer" } }}
             >
                 Reviewer
             </Typography>
@@ -79,16 +86,18 @@ function Header() {
                 </IconButton>
             </Paper>
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-            {0 ? (
+            {!auth.user ? (
                 <Box>
                     <Button
                         sx={{ mr: "5px" }}
+                        size="small"
                         variant="contained"
                         onClick={() => navigate("/login")}
                     >
                         Login
                     </Button>
                     <Button
+                        size="small"
                         variant="contained"
                         onClick={() => navigate("/register")}
                     >
@@ -107,10 +116,13 @@ function Header() {
                         width: "190px",
                     }}
                 >
-                    <Typography>Username</Typography>
-                    <Box sx={{display:'flex'}}>
+                    <Typography sx={{ml:'20px'}}>{auth.user.username}</Typography>
+                    <Box sx={{ display: "flex" }}>
                         <Divider sx={{ height: 22 }} orientation="vertical" />
-                        <KeyboardArrowDownIcon onClick={handleClick} sx={{'&:hover':{cursor:'pointer'}}}/>
+                        <KeyboardArrowDownIcon
+                            onClick={handleClick}
+                            sx={{ "&:hover": { cursor: "pointer" } }}
+                        />
                     </Box>
                 </Box>
             )}
@@ -150,16 +162,22 @@ function Header() {
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-                <MenuItem onClick={()=>{
-                    handleClose()
-                    navigate('/user')
-                }} >
-                    <Avatar /> Profile
+                <MenuItem
+                    onClick={() => {
+                        handleClose();
+                        navigate("/user");
+                    }}
+                >
+                  
+                    <Avatar src={auth.user?.photo ? auth.user.photo : ''}/> Profile
                 </MenuItem>
-                <MenuItem onClick={()=>{
-                    handleClose()
-         
-                }}>
+                <MenuItem
+                    onClick={() => {
+                        handleClose();
+                        auth.logout();
+                        // handleLogout();
+                    }}
+                >
                     <ListItemIcon>
                         <Logout fontSize="small" />
                     </ListItemIcon>
@@ -176,7 +194,9 @@ function Header() {
                 )}
             </IconButton>
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-            <Box sx={{ minWidth: 120, background:'#fff', borderRadius:'5px' }}>
+            <Box
+                sx={{ minWidth: 120, background: "#fff", borderRadius: "5px" }}
+            >
                 <FormControl fullWidth>
                     <Select
                         sx={{ height: "30px" }}

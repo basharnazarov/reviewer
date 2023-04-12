@@ -16,10 +16,7 @@ function Admin() {
     const [users, setUsers] = React.useState([]);
     const navigate = useNavigate();
     const auth = useAuth();
-    const handleLogout = () => {
-        auth.logout();
-        navigate("/");
-    };
+    // const user = localStorage
     const handleFilter = (arr) => {
         const selected = arr.filter((user) => user.isChecked === true);
         if (selected.length === 0) {
@@ -102,7 +99,7 @@ function Admin() {
 
     const fetchData = async () => {
         const result = await axios
-            .get(`${process.env.REACT_APP_BASE_URL}/users`)
+            .get(`${process.env.REACT_APP_BASE_URL}/members`, {headers:{"x-access-token": auth?.user?.token}})
             .then((response) => {
                 if (response.data.message) {
                     console.log(response.data.message);
@@ -111,20 +108,22 @@ function Admin() {
                 }
             });
         if (result.length === 0) {
-            navigate("/register");
+            navigate("/");
         }
         setUsers(result);
     };
 
     React.useEffect(() => {
-        fetchData();
+       if(auth.user !== null){
+        fetchData()
+       }
     }, []);
 
     return (
-        <Box sx={{ mt: "5%" }}>
+        <Box>
             <Paper
                 style={{
-                    width: "70%",
+                    width: "100%",
                     margin: "auto",
                     marginBottom: "10px",
                     padding: "10px",
@@ -159,18 +158,10 @@ function Admin() {
                 >
                     Delete
                 </Button>
-                <Button
-                    size="small"
-                    variant="contained"
-                    color="info"
-                    onClick={handleLogout}
-                >
-                    Logout
-                </Button>
             </Paper>
             <TableContainer
                 component={Paper}
-                style={{ width: "70%", margin: "auto" }}
+                style={{ width: "100%", margin: "auto" }}
             >
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead sx={{ background: "#E8F8FD" }}>
@@ -196,7 +187,7 @@ function Admin() {
                             <TableCell>e-mail</TableCell>
                             <TableCell>last login time</TableCell>
                             <TableCell>registration time</TableCell>
-                            <TableCell>status</TableCell>
+                            <TableCell>role</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -224,11 +215,11 @@ function Admin() {
                                       <TableCell component="th" scope="row">
                                           {row.email}
                                       </TableCell>
-                                      <TableCell>{row.lastLoginTime}</TableCell>
+                                      <TableCell>{row.createdAt}</TableCell>
                                       <TableCell component="th" scope="row">
-                                          {row.registerTime}
+                                          {row.updatedAt}
                                       </TableCell>
-                                      <TableCell>{row.status}</TableCell>
+                                      <TableCell>{row.userRole}</TableCell>
                                   </TableRow>
                               ))
                             : ""}

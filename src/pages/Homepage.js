@@ -31,12 +31,12 @@ function Homepage() {
 
     const images = ['https://www.dropbox.com/s/3rdzhzy76h9bmk8/reviewer.png?raw=1', 'https://www.dropbox.com/s/ncyb0qbgt3dg67h/avengers.jpg?raw=1', 'https://www.dropbox.com/s/2we1xngtno7004r/godofwar.jpg?raw=1', 'https://www.dropbox.com/s/xr9eom0uq60v4ca/harrypotter.jpg?raw=1']
     return (
-        <MainLayout>
+     
             <Box sx={{ display: "flex", columnGap: "10px" }}>
                 <Box>
                     <Typography variant="h5">Recently Added Reviews</Typography>
-                    {images.map(item => {
-                        return (<ReviewCard img={item}/>)
+                    {images.map((item,index) => {
+                        return (<ReviewCard img={item} key={index}/>)
                     })}
                     
                 
@@ -62,9 +62,9 @@ function Homepage() {
                             gap: "4px",
                         }}
                     >
-                        {tags.map((item) => {
+                        {tags.map((item,index) => {
                             return (
-                                <Chip label={item} clickable/>
+                                <Chip label={item} key={index} clickable/>
                             );
                         })}
                     </Paper>
@@ -80,7 +80,7 @@ function Homepage() {
                             {topRated.map((item, index) => {
                                 return (
                                     <Typography
-                                        key={item}
+                                        key={index}
                                         sx={{
                                             background: "#ddd",
                                             height: "25px",
@@ -102,7 +102,7 @@ function Homepage() {
                     </Paper>
                 </Box>
             </Box>
-        </MainLayout>
+      
     );
 }
 
