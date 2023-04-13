@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
-import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import InputBase from "@mui/material/InputBase";
@@ -23,7 +23,8 @@ function Header() {
     const navigate = useNavigate();
     const theme = useTheme();
     const auth = useAuth();
-    const [language, setLanguage] = React.useState(1);
+    const locale = JSON.parse(localStorage.getItem("locale"));
+    
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -33,18 +34,20 @@ function Header() {
         setAnchorEl(null);
     };
     const handleChange = (event) => {
-        setLanguage(event.target.value);
-    };
 
-    // const handleLogout = () => {
-    //     window.open("http://localhost:5000/auth/logout", "_self");
-    // };
+        if (event.target.value) {
+            localStorage.setItem("locale", JSON.stringify(true));
+        } else {
+            localStorage.setItem("locale", JSON.stringify(false));
+        }
+        window.location.reload();
+
+    };
 
     return (
         <Box
             sx={{
                 width: "100%",
-                bgcolor: "#ddd",
                 color: "text.primary",
                 height: "50px",
                 display: "flex",
@@ -106,17 +109,21 @@ function Header() {
                 </Box>
             ) : (
                 <Box
+                    component={Paper}
+                    elevation={2}
                     sx={{
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
-                        background: "#fff",
+
                         p: "4px 4px 4px 6px",
                         borderRadius: "5px",
                         width: "190px",
                     }}
                 >
-                    <Typography sx={{ml:'20px'}}>{auth.user.username}</Typography>
+                    <Typography sx={{ ml: "20px" }}>
+                        {auth.user.username}
+                    </Typography>
                     <Box sx={{ display: "flex" }}>
                         <Divider sx={{ height: 22 }} orientation="vertical" />
                         <KeyboardArrowDownIcon
@@ -168,14 +175,13 @@ function Header() {
                         navigate("/user");
                     }}
                 >
-                  
-                    <Avatar src={auth.user?.photo ? auth.user.photo : ''}/> Profile
+                    <Avatar src={auth.user?.photo ? auth.user.photo : ""} />{" "}
+                    Profile
                 </MenuItem>
                 <MenuItem
                     onClick={() => {
                         handleClose();
                         auth.logout();
-                        // handleLogout();
                     }}
                 >
                     <ListItemIcon>
@@ -186,7 +192,17 @@ function Header() {
             </Menu>
 
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-            <IconButton color="inherit">
+            <IconButton
+                color="inherit"
+                onClick={() => {
+                    if (theme.palette.mode === "light") {
+                        localStorage.setItem("mode", JSON.stringify(false));
+                    } else {
+                        localStorage.setItem("mode", JSON.stringify(true));
+                    }
+                    window.location.reload();
+                }}
+            >
                 {theme.palette.mode === "dark" ? (
                     <Brightness7Icon />
                 ) : (
@@ -194,17 +210,15 @@ function Header() {
                 )}
             </IconButton>
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-            <Box
-                sx={{ minWidth: 120, background: "#fff", borderRadius: "5px" }}
-            >
+            <Box sx={{ minWidth: 120, borderRadius: "5px" }}>
                 <FormControl fullWidth>
                     <Select
                         sx={{ height: "30px" }}
-                        value={language}
+                        value={locale}
                         onChange={handleChange}
                     >
-                        <MenuItem value={1}>English</MenuItem>
-                        <MenuItem value={2}>Uzbek</MenuItem>
+                        <MenuItem value={false}>English</MenuItem>
+                        <MenuItem value={true}>Uzbek</MenuItem>
                     </Select>
                 </FormControl>
             </Box>

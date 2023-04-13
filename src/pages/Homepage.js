@@ -1,12 +1,13 @@
 import React from "react";
-import MainLayout from "../layouts/MainLayout";
 import { Box, Typography, Paper } from "@mui/material";
 import ReviewCard from "../components/ReviewCard";
-import Chip from '@mui/material/Chip';
+import Chip from "@mui/material/Chip";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
 
 function Homepage() {
     const navigate = useNavigate();
+    const theme = useTheme();
     const tags = [
         "movies",
         "books",
@@ -29,80 +30,82 @@ function Homepage() {
         "Forest Gump",
     ];
 
-    const images = ['https://www.dropbox.com/s/3rdzhzy76h9bmk8/reviewer.png?raw=1', 'https://www.dropbox.com/s/ncyb0qbgt3dg67h/avengers.jpg?raw=1', 'https://www.dropbox.com/s/2we1xngtno7004r/godofwar.jpg?raw=1', 'https://www.dropbox.com/s/xr9eom0uq60v4ca/harrypotter.jpg?raw=1']
+    const images = [
+        "https://www.dropbox.com/s/3rdzhzy76h9bmk8/reviewer.png?raw=1",
+        "https://www.dropbox.com/s/ncyb0qbgt3dg67h/avengers.jpg?raw=1",
+        "https://www.dropbox.com/s/2we1xngtno7004r/godofwar.jpg?raw=1",
+        "https://www.dropbox.com/s/xr9eom0uq60v4ca/harrypotter.jpg?raw=1",
+    ];
     return (
-     
-            <Box sx={{ display: "flex", columnGap: "10px" }}>
-                <Box>
-                    <Typography variant="h5">Recently Added Reviews</Typography>
-                    {images.map((item,index) => {
-                        return (<ReviewCard img={item} key={index}/>)
-                    })}
-                    
-                
-                </Box>
-                <Box
+        <Box sx={{ display: "flex", columnGap: "10px" }}>
+            <Box>
+                <Typography variant="h5">
+                    {theme.locale === "en"
+                        ? "Recently Added Reviews"
+                        : "Eng so'nggi tahlillar"}
+                </Typography>
+                {images.map((item, index) => {
+                    return <ReviewCard img={item} key={index} />;
+                })}
+            </Box>
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    width: "30%",
+                    rowGap: "5px",
+                }}
+            >
+                <Typography variant="h5">Tags Cloud</Typography>
+                <Paper
                     sx={{
+                        width: "280px",
+                        height: "auto",
+                        p: "20px",
+                        mb: "10px",
                         display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        width: "30%",
-                        rowGap:'5px'
+                        flexWrap: "wrap",
+                        gap: "4px",
                     }}
                 >
-                    <Typography variant="h5">Tags Cloud</Typography>
-                    <Paper
-                        sx={{
-                            width: "280px",
-                            height: "auto",
-                            p: "20px",
-                            mb:'10px',
-                            display: "flex",
-                            flexWrap: "wrap",
-                            gap: "4px",
-                        }}
-                    >
-                        {tags.map((item,index) => {
+                    {tags.map((item, index) => {
+                        return <Chip label={item} key={index} clickable />;
+                    })}
+                </Paper>
+                <Typography variant="h5">Top Rated Reviews</Typography>
+                <Paper
+                    sx={{
+                        width: "280px",
+                        height: "auto",
+                        p: "20px",
+                    }}
+                >
+                    <ol>
+                        {topRated.map((item, index) => {
                             return (
-                                <Chip label={item} key={index} clickable/>
+                                <Typography
+                                    key={index}
+                                    sx={{
+                                        height: "25px",
+                                        p: "2px",
+                                        borderRadius: "5px",
+                                        mb: "3px",
+                                        "&:hover": {
+                                            cursor: "pointer",
+                                            opacity: "0.8",
+                                        },
+                                    }}
+                                    onClick={() => navigate("/review")}
+                                >
+                                    {index + 1}. {item}
+                                </Typography>
                             );
                         })}
-                    </Paper>
-                    <Typography variant="h5">Top Rated Reviews</Typography>
-                    <Paper
-                        sx={{
-                            width: "280px",
-                            height: "auto",
-                            p: "20px",
-                        }}
-                    >
-                        <ol>                         
-                            {topRated.map((item, index) => {
-                                return (
-                                    <Typography
-                                        key={index}
-                                        sx={{
-                                            background: "#ddd",
-                                            height: "25px",
-                                            p: "2px",
-                                            borderRadius: "5px",
-                                            mb:'3px',
-                                            "&:hover":{
-                                                cursor:'pointer',
-                                                opacity:'0.8'
-                                            }
-                                        }}
-                                        onClick={()=>navigate('/review')}
-                                    >
-                                        {index+1}. {item}
-                                    </Typography>
-                                );
-                            })}
-                        </ol>
-                    </Paper>
-                </Box>
+                    </ol>
+                </Paper>
             </Box>
-      
+        </Box>
     );
 }
 

@@ -9,53 +9,65 @@ import Homepage from "./pages/Homepage";
 import Review from "./pages/Review";
 import UserPage from "./pages/UserPage";
 import MainLayout from "./layouts/MainLayout";
-
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
 function App() {
+    const mode = JSON.parse(localStorage.getItem("mode"));
+    const locale = JSON.parse(localStorage.getItem("locale"));
+    const theme = createTheme({
+        palette: {
+            mode: mode ? "light" : "dark",
+        },
+        locale: locale? 'uz' : 'en'
+    });
 
     return (
         <AuthProvider>
             <BrowserRouter>
-                <Routes>
-                    <Route
-                        path="/"
-                        element={
-                            <MainLayout>
-                                <Homepage />
-                            </MainLayout>
-                        }
-                    />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route
-                        path="/review"
-                        element={
-                            <MainLayout>
-                                <Review />
-                            </MainLayout>
-                        }
-                    />
-                    <Route element={<RequireAuth />}>
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <Routes>
                         <Route
-                            path="/admin"
+                            path="/"
                             element={
                                 <MainLayout>
-                                    <Admin />
+                                    <Homepage />
                                 </MainLayout>
                             }
                         />
-                    </Route>
-                    <Route element={<RequireAuth />}>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
                         <Route
-                            path="/user"
+                            path="/review"
                             element={
                                 <MainLayout>
-                                    <UserPage />
+                                    <Review />
                                 </MainLayout>
                             }
                         />
-                    </Route>
-                </Routes>
+                        <Route element={<RequireAuth />}>
+                            <Route
+                                path="/admin"
+                                element={
+                                    <MainLayout>
+                                        <Admin />
+                                    </MainLayout>
+                                }
+                            />
+                        </Route>
+                        <Route element={<RequireAuth />}>
+                            <Route
+                                path="/user"
+                                element={
+                                    <MainLayout>
+                                        <UserPage />
+                                    </MainLayout>
+                                }
+                            />
+                        </Route>
+                    </Routes>
+                </ThemeProvider>
             </BrowserRouter>
         </AuthProvider>
     );

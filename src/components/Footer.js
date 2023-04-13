@@ -6,7 +6,6 @@ function Footer() {
         <Box
             sx={{
                 width: "100%",
-                bgcolor: "#ddd",
                 color: "text.primary",
                 height: "50px",
                 display: "flex",

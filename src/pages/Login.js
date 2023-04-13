@@ -98,11 +98,11 @@ function Login() {
                                 <GoogleIcon />
                             </IconButton>
                             
-                            <IconButton color="primary" disabled>
-                                <FacebookIcon onClick={handleFacebookLogin}/>
+                            <IconButton color="primary" disabled onClick={handleFacebookLogin} >
+                                <FacebookIcon />
                             </IconButton>
-                            <IconButton color="primary">
-                                <GitHubIcon onClick={handleGithubLogin}/>
+                            <IconButton color="primary" onClick={handleGithubLogin}>
+                                <GitHubIcon />
                             </IconButton>
                         </Stack>
                     </Box>
