@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/auth";
@@ -134,6 +134,9 @@ function Admin() {
                     columnGap: "10px",
                 }}
             >
+                <Typography>
+                   Admin: {auth.user?.username}
+                </Typography>
                 <Button
                     size="small"
                     variant="contained"

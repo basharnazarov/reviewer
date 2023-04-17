@@ -98,7 +98,7 @@ function Login() {
                                 <GoogleIcon />
                             </IconButton>
                             
-                            <IconButton color="primary" disabled onClick={handleFacebookLogin} >
+                            <IconButton color="primary"  onClick={handleFacebookLogin} >
                                 <FacebookIcon />
                             </IconButton>
                             <IconButton color="primary" onClick={handleGithubLogin}>
