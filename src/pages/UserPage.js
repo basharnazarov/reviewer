@@ -1,5 +1,18 @@
 import React from "react";
-import { Paper, Typography, Box, Button } from "@mui/material";
+import axios from "axios";
+import moment from 'moment'
+import {
+  Paper,
+  Typography,
+  Box,
+  Button,
+  Slide,
+  Dialog,
+  AppBar,
+  Toolbar,
+  IconButton,
+  TextField,
+} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { useTheme } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -9,6 +22,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useAuth } from "../auth/auth";
+import CloseIcon from "@mui/icons-material/Close";
 
 const images = [
   "https://www.dropbox.com/s/3rdzhzy76h9bmk8/reviewer.png?raw=1",
@@ -17,9 +31,80 @@ const images = [
   "https://www.dropbox.com/s/xr9eom0uq60v4ca/harrypotter.jpg?raw=1",
 ];
 
-function UserPage() {
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+function UserPage(props) {
   const auth = useAuth();
   const theme = useTheme();
+  const [reviewDetails, setReviewDetails] = React.useState({
+    title: "",
+    content: "",
+    memberId: auth.user?.memberId,
+  });
+  const [open, setOpen] = React.useState(false);
+  const [reviews, setReviews] = React.useState(null);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleCreateReview = () => {
+    axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL}/createReview`,
+        {
+          title: reviewDetails.title,
+          content: reviewDetails.content,
+          memberId: reviewDetails.memberId,
+        },
+        { headers: { "x-access-token": auth?.user?.token } }
+      )
+      .then((response) => {
+        if (response.data.message) {
+          console.log(response.data.message);
+        } else {
+          handleClose();
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+
+ 
+
+
+  React.useEffect(() => {
+    const fetchReviews = async () => {
+      const result = await axios
+        .post(
+          `${process.env.REACT_APP_BASE_URL}/reviews`,
+          {
+            memberId: reviewDetails.memberId,
+          },
+          { headers: { "x-access-token": auth?.user?.token } }
+        )
+        .then((response) => {
+          if (response.data.message) {
+            console.log(response.data.message);
+          } else {
+            console.log(response.data)
+           return response.data
+          }
+        })
+        .catch((err) => console.error(err));
+        if(result.length > 0){
+          setReviews(result)
+        }
+    };
+    fetchReviews()
+    console.log("reviews", reviews);
+  },[props.id]);
+
   return (
     <Paper elevation={3} sx={{ p: "30px" }}>
       <Box
@@ -44,14 +129,15 @@ function UserPage() {
         <Box>
           <Typography>Username: {auth.user?.username}</Typography>
           <Typography>Email: {auth.user?.email}</Typography>
+          <Typography>CreatedAt: {auth.user?.createdAt}</Typography>
         </Box>
       </Box>
       <Button
         size="small"
         variant="contained"
         color="primary"
-        sx={{float:'right', mb: '10px'}}
-        // onClick={handleDelete}
+        sx={{ float: "right", mb: "10px" }}
+        onClick={handleClickOpen}
       >
         Create a new review
       </Button>
@@ -64,16 +150,16 @@ function UserPage() {
             <TableHead>
               <TableRow>
                 <TableCell>picture</TableCell>
-                <TableCell align="center">title</TableCell>
-                <TableCell align="center">content</TableCell>
-                <TableCell align="center">createdAt</TableCell>
-                <TableCell align="center">updatedAt</TableCell>
+                <TableCell >title</TableCell>
+                <TableCell >content</TableCell>
+                <TableCell >createdAt</TableCell>
+                <TableCell >updatedAt</TableCell>
                 <TableCell align="center">actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {images.length > 0
-                ? images.map((row) => (
+              {reviews?.length > 0
+                ? reviews.map((row) => (
                     <TableRow
                       key={row}
                       sx={{
@@ -85,13 +171,13 @@ function UserPage() {
                       <TableCell component="th" scope="row">
                         <Avatar alt="avatar" src={row} variant="square" />
                       </TableCell>
-                      <TableCell>{row.username}</TableCell>
-                      <TableCell component="th" scope="row">
-                        {row.email}
+                      <TableCell >{row?.title.substring(0,10)+'...'}</TableCell>
+                      <TableCell component="th" scope="row"  sx={{width:'150px'}}>
+                        {row.content.substring(0,10)+'...'}
                       </TableCell>
-                      <TableCell>{row.createdAt}</TableCell>
-                      <TableCell component="th" scope="row">
-                        {row.updatedAt}
+                      <TableCell sx={{width:'120px'}}>{moment(row.createdAt).format('ll')}</TableCell>
+                      <TableCell component="th" scope="row" sx={{width:'120px'}}>
+                        {row.updatedAt ? moment(row.updatedAt).format('ll') : ''}
                       </TableCell>
                       <TableCell>
                         <Box
@@ -135,6 +221,65 @@ function UserPage() {
           </Table>
         </TableContainer>
       </Box>
+      <Dialog
+        fullScreen
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
+        <AppBar sx={{ position: "relative" }}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleClose}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+              Fill the review details below...
+            </Typography>
+            <Button
+              autoFocus
+              color="inherit"
+              onClick={() => {
+                handleCreateReview();
+                // handleClose()
+              }}
+            >
+              save
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <Box
+          sx={{
+            width: "60%",
+            display: "flex",
+            flexDirection: "column",
+            m: "auto",
+            rowGap: "30px",
+          }}
+        >
+          <TextField
+            id="outlined-basic"
+            label="Title"
+            variant="outlined"
+            onChange={(e) =>
+              setReviewDetails({ ...reviewDetails, title: e.target.value })
+            }
+          />
+          <TextField
+            id="outlined-multiline-static"
+            label="Content"
+            multiline
+            rows={14}
+            onChange={(e) =>
+              setReviewDetails({ ...reviewDetails, content: e.target.value })
+            }
+          />
+        </Box>
+      </Dialog>
     </Paper>
   );
 }

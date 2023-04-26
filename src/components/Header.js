@@ -75,7 +75,11 @@ function Header() {
       >
         <InputBase
           sx={{ ml: 1, flex: 1 }}
-          placeholder="e.g. Movies, Books, Games..."
+          placeholder={
+            theme.locale === 'uz'
+              ? "Kinolar, kitoblar, o'yinlar..."
+              : "e.g. Movies, Books, Games..."
+          }
           inputProps={{ "aria-label": "search " }}
         />
         <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
@@ -89,11 +93,10 @@ function Header() {
             width: "190px",
             display: "flex",
             alignItems: "center",
-            
           }}
         >
           <Button
-            sx={{ mr: "5px", width:'100px'}}
+            sx={{ mr: "5px", width: "100px" }}
             size="small"
             variant="contained"
             onClick={() => navigate("/login")}
@@ -101,7 +104,7 @@ function Header() {
             Login
           </Button>
           <Button
-            sx={{width:'100px'}}
+            sx={{ width: "100px" }}
             size="small"
             variant="contained"
             onClick={() => navigate("/register")}
