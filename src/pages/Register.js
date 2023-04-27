@@ -1,7 +1,7 @@
 import React from "react";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -50,9 +50,10 @@ function Register() {
                         flexDirection: "column",
                         rowGap: "25px",
                     }}
+               
                 >
                     <TextField
-                        id="standard-basic"
+                     
                         label="Username"
                         variant="standard"
                         onChange={(e) =>
@@ -60,7 +61,7 @@ function Register() {
                         }
                     />
                     <TextField
-                        id="standard-basic"
+                       
                         label="E-mail"
                         variant="standard"
                         type="email"
@@ -69,7 +70,7 @@ function Register() {
                         }
                     />
                     <TextField
-                        id="standard-basic"
+                      
                         type="password"
                         label="Password"
                         variant="standard"

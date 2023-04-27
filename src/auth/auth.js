@@ -53,21 +53,21 @@ export const AuthProvider = ({ children }) => {
                     );
                     const localData = JSON.parse(localStorage.getItem("auth"));
                     setUserData(localData);
-                    axios
-                    .post(`${process.env.REACT_APP_BASE_URL}/createMember`, {
-                        email: localData.email,
-                        username: localData.username,
-                        id:localData.id,
+                    // axios
+                    // .post(`${process.env.REACT_APP_BASE_URL}/createMember`, {
+                    //     email: localData.email,
+                    //     username: localData.username,
+                    //     id:localData.id,
                        
-                    })
-                    .then((response) => {
-                        if (response.data.message) {
-                            console.log(response.data.message);
-                        } else {
-                            console.log('user saved successfully')
-                        }
-                    })
-                    .catch((err) => console.error(err));
+                    // })
+                    // .then((response) => {
+                    //     if (response.data.message) {
+                    //         console.log(response.data.message);
+                    //     } else {
+                    //         console.log('user saved successfully')
+                    //     }
+                    // })
+                    // .catch((err) => console.error(err));
                 })
                 .catch((err) => {
                     console.log(err);

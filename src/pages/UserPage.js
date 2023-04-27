@@ -70,6 +70,7 @@ function UserPage(props) {
           console.log(response.data.message);
         } else {
           handleClose();
+          window.location.reload();
         }
       })
       .catch((err) => console.error(err));
@@ -129,7 +130,7 @@ function UserPage(props) {
         <Box>
           <Typography>Username: {auth.user?.username}</Typography>
           <Typography>Email: {auth.user?.email}</Typography>
-          <Typography>CreatedAt: {auth.user?.createdAt}</Typography>
+          <Typography>CreatedAt: {moment(auth.user?.createdAt).format('LLLL')}</Typography>
         </Box>
       </Box>
       <Button
