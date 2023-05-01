@@ -7,9 +7,12 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Rating from "@mui/material/Rating";
 import { useNavigate } from "react-router-dom";
+import moment from 'moment'
 
 function ReviewCard(props) {
   const navigate = useNavigate();
+  const { details } = props
+
   return (
     <Card
       sx={{
@@ -32,20 +35,22 @@ function ReviewCard(props) {
         }}
       />
       <CardContent>
+      
         <Typography gutterBottom variant="h5" component="div">
-          Avengers
+          {details.title}
         </Typography>
+        
+
         <Typography variant="body2" color="text.secondary">
-          Avengerss are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+          {details.content.substring(0, 120) + '...'}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Typography>
-          <i>Author Name</i>
-        </Typography>
-
+      <CardActions sx={{ml:'2%', mr:'2%',display:'flex', justifyContent:'space-between'}}>
+       
         <Rating name="half-rating" defaultValue={4} precision={1} />
+        <Typography >
+          <i>Created by {details.username} on {moment(details.createdAt).format('ll')}</i>
+        </Typography>
       </CardActions>
     </Card>
   );

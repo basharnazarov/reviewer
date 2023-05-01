@@ -167,7 +167,7 @@ function Admin() {
                 style={{ width: "100%", margin: "auto" }}
             >
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead sx={{ background: "#E8F8FD" }}>
+                    <TableHead >
                         <TableRow>
                             <TableCell>
                                 {users.length > 0 ? (
@@ -185,7 +185,7 @@ function Admin() {
                                     <Checkbox />
                                 )}
                             </TableCell>
-                            <TableCell>id</TableCell>
+                            <TableCell>memberId</TableCell>
                             <TableCell>username</TableCell>
                             <TableCell>e-mail</TableCell>
                             <TableCell>last login time</TableCell>
@@ -212,7 +212,7 @@ function Admin() {
                                           />
                                       </TableCell>
                                       <TableCell component="th" scope="row">
-                                          {row.ID}
+                                          {row.memberId}
                                       </TableCell>
                                       <TableCell>{row.username}</TableCell>
                                       <TableCell component="th" scope="row">
