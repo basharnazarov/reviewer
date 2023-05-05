@@ -12,65 +12,68 @@ import MainLayout from "./layouts/MainLayout";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
-function App() {
-    const mode = JSON.parse(localStorage.getItem("mode"));
-    const locale = JSON.parse(localStorage.getItem("locale"));
-    const theme = createTheme({
-        palette: {
-            mode: mode ? "light" : "dark",
-        },
-        locale: locale? 'uz' : 'en'
-    });
 
-    return (
-        <AuthProvider>
-            <BrowserRouter>
-                <ThemeProvider theme={theme}>
-                    <CssBaseline />
-                    <Routes>
-                        <Route
-                            path="/"
-                            element={
-                                <MainLayout>
-                                    <Homepage />
-                                </MainLayout>
-                            }
-                        />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route
-                            path="/review"
-                            element={
-                                <MainLayout>
-                                    <Review />
-                                </MainLayout>
-                            }
-                        />
-                        <Route element={<RequireAuth />}>
-                            <Route
-                                path="/admin"
-                                element={
-                                    <MainLayout>
-                                        <Admin />
-                                    </MainLayout>
-                                }
-                            />
-                        </Route>
-                        <Route element={<RequireAuth />}>
-                            <Route
-                                path="/user"
-                                element={
-                                    <MainLayout>
-                                        <UserPage />
-                                    </MainLayout>
-                                }
-                            />
-                        </Route>
-                    </Routes>
-                </ThemeProvider>
-            </BrowserRouter>
-        </AuthProvider>
-    );
+function App() {
+  const mode = JSON.parse(localStorage.getItem("mode"));
+  const locale = JSON.parse(localStorage.getItem("locale"));
+  const theme = createTheme({
+    palette: {
+      mode: mode ? "light" : "dark",
+      main: '#1976d2',
+    },
+    locale: locale ? "uz" : "en",
+  });
+
+  return (
+    <AuthProvider>
+    
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <MainLayout>
+                  <Homepage />
+                </MainLayout>
+              }
+            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route
+              path="/review/"
+              element={
+                <MainLayout>
+                  <Review />
+                </MainLayout>
+              }
+            />
+            <Route element={<RequireAuth />}>
+              <Route
+                path="/admin"
+                element={
+                  <MainLayout>
+                    <Admin />
+                  </MainLayout>
+                }
+              />
+            </Route>
+            <Route element={<RequireAuth />}>
+              <Route
+                path="/user"
+                element={
+                  <MainLayout>
+                    <UserPage />
+                  </MainLayout>
+                }
+              />
+            </Route>
+          </Routes>
+        </ThemeProvider>
+      </BrowserRouter>
+    </AuthProvider>
+  );
 }
 
 export default App;

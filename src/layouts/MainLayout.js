@@ -1,12 +1,13 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Box, Slide } from "@mui/material";
+import { Box, Slide, IconButton, Tooltip } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { useTheme } from "@mui/material/styles";
 
 function MainLayout({ children }) {
   const [visible, setVisible] = React.useState(false);
-
+  const theme = useTheme();
   const toggleVisible = () => {
     const scrolled = document.documentElement.scrollTop;
     if (scrolled > 300) {
@@ -31,17 +32,24 @@ function MainLayout({ children }) {
       <Box sx={{ maxWidth: "990px", m: "auto", p: "20px 0px" }}>{children}</Box>
       <Footer />
       <Slide direction="left" in={visible} mountOnEnter unmountOnExit>
-        <KeyboardArrowUpIcon
-          onClick={scrollToTop}
-          sx={{
-            background: "white",
-            color: "red",
-            position: "fixed",
-            right: "50px",
-            bottom: "30px",
-            "&:hover": { cursor: "pointer" },
-          }}
-        />
+        <Tooltip title="Scroll to top" placement="top">
+          <IconButton
+            color="default"
+            onClick={scrollToTop}
+            sx={{
+              background: theme.palette.main,
+              position: "fixed",
+              right: "50px",
+              bottom: "30px",
+              "&:hover": {
+                cursor: "pointer",
+                background: theme.palette.main,
+              },
+            }}
+          >
+            <KeyboardArrowUpIcon />
+          </IconButton>
+        </Tooltip>
       </Slide>
     </Box>
   );

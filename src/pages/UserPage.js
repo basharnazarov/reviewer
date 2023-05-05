@@ -103,7 +103,6 @@ function UserPage(props) {
         }
     };
     fetchReviews()
-    console.log("reviews", reviews);
   },[props.id]);
 
   return (

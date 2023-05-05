@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Paper, } from "@mui/material";
+import { Box, Typography, Paper } from "@mui/material";
 import ReviewCard from "../components/ReviewCard";
 import Chip from "@mui/material/Chip";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ function Homepage(props) {
   const theme = useTheme();
   const auth = useAuth();
   const [allReviews, setAllReviews] = React.useState([]);
+
   const tags = [
     "movies",
     "books",
@@ -27,8 +28,6 @@ function Homepage(props) {
     "budget",
   ];
 
-  const topRated = ["Avergers:End game", "Interstellar", "Lucy", "Forest Gump"];
-
   const images = [
     "https://www.dropbox.com/s/3rdzhzy76h9bmk8/reviewer.png?raw=1",
     "https://www.dropbox.com/s/ncyb0qbgt3dg67h/avengers.jpg?raw=1",
@@ -37,13 +36,9 @@ function Homepage(props) {
   ];
 
   React.useEffect(() => {
-    const fetchReviews = async () => {
+    const fetchAllReviews = async () => {
       const result = await axios
-        .get(
-          `${process.env.REACT_APP_BASE_URL}/allReviews`,
-
-          { headers: { "x-access-token": auth?.user?.token } }
-        )
+        .get(`${process.env.REACT_APP_BASE_URL}/allReviews`)
         .then((response) => {
           if (response.data.message) {
             console.log(response.data.message);
@@ -57,8 +52,7 @@ function Homepage(props) {
         setAllReviews(result);
       }
     };
-    fetchReviews();
-    console.log("All Reviews", allReviews);
+    fetchAllReviews();
   }, [props.id]);
 
   return (
@@ -71,7 +65,6 @@ function Homepage(props) {
         </Typography>
         {allReviews.length > 0
           ? allReviews.map((item) => {
-            
               return (
                 <ReviewCard img={images[0]} key={item.ID} details={item} />
               );
@@ -112,26 +105,35 @@ function Homepage(props) {
           }}
         >
           <ol>
-            {topRated.map((item, index) => {
-              return (
-                <Typography
-                  key={index}
-                  sx={{
-                    height: "25px",
-                    p: "2px",
-                    borderRadius: "5px",
-                    mb: "3px",
-                    "&:hover": {
-                      cursor: "pointer",
-                      opacity: "0.8",
-                    },
-                  }}
-                  onClick={() => navigate("/review")}
-                >
-                  {index + 1}. {item}
-                </Typography>
-              );
-            })}
+            {allReviews.length > 0
+              ? allReviews.map((item, index) => {
+                  return (
+                    <Typography
+                      key={item.title}
+                      sx={{
+                        height: "25px",
+                        p: "2px",
+                        borderRadius: "5px",
+                        mb: "3px",
+                        "&:hover": {
+                          cursor: "pointer",
+                          opacity: "0.8",
+                        },
+                      }}
+                      onClick={() => {
+                        localStorage.setItem("review", JSON.stringify(item));
+                        const reviewData = JSON.parse(
+                          localStorage.getItem("review")
+                        );
+                        auth.setSelectedReview(reviewData);
+                        navigate("/review");
+                      }}
+                    >
+                      {index + 1}. {item.title.substring(0, 20) + "..."}
+                    </Typography>
+                  );
+                })
+              : ""}
           </ol>
         </Paper>
       </Box>
