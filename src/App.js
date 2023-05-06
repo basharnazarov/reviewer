@@ -13,6 +13,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
 
+
 function App() {
   const mode = JSON.parse(localStorage.getItem("mode"));
   const locale = JSON.parse(localStorage.getItem("locale"));
@@ -30,6 +31,7 @@ function App() {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />
+          
           <Routes>
             <Route
               path="/"

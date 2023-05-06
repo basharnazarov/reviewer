@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import { Box, Slide, IconButton, Tooltip } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useTheme } from "@mui/material/styles";
+import ParticleBackground from "../components/ParticleBackground";
 
 function MainLayout({ children }) {
   const [visible, setVisible] = React.useState(false);
@@ -31,6 +32,9 @@ function MainLayout({ children }) {
       <Header />
       <Box sx={{ maxWidth: "990px", m: "auto", p: "20px 0px" }}>{children}</Box>
       <Footer />
+
+      <ParticleBackground />
+
       <Slide direction="left" in={visible} mountOnEnter unmountOnExit>
         <Tooltip title="Scroll to top" placement="top">
           <IconButton

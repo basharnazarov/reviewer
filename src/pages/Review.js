@@ -10,23 +10,57 @@ import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import Comments from "../components/Comments";
 import { useAuth } from "../auth/auth";
+import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
 
 function Review() {
   const navigate = useNavigate();
   const auth = useAuth();
-  const {selectedReview} = auth
+  const { selectedReview } = auth;
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const handleCreateRate = (newRate) => {
+    axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL}/createRate`,
+        {
+          rate: newRate,
+          memberId: auth.user?.memberId,
+          reviewId: selectedReview?.ID,
+        },
+        { headers: { "x-access-token": auth?.user?.token } }
+      )
+      .then((response) => {
+        if (response.data.message) {
+          console.log(response.data.message);
+        } else {
+          handleClick();
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+
   return (
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      {console.log('ff', selectedReview?.title)}
       <Card
         sx={{
           width: "100% ",
           textAlign: "center",
           height: "auto",
         }}
-       
       >
         <CardMedia
           component="img"
@@ -47,7 +81,14 @@ function Review() {
             <Typography>
               <i>{selectedReview?.username}</i>
             </Typography>
-            <Rating name="half-rating" defaultValue={3} precision={1} />
+            <Rating
+              name="half-rating"
+              defaultValue={3}
+              precision={1}
+              onChange={(e) => {
+                handleCreateRate(e.target.value);
+              }}
+            />
           </Box>
 
           <Typography variant="body2" color="text.secondary">
@@ -55,8 +96,17 @@ function Review() {
           </Typography>
         </CardContent>
       </Card>
-      <Typography variant="h6" sx={{m: '20px 0px'}}> Comments</Typography>
-      <Comments reviewId={selectedReview?.ID} memberId={auth.user?.memberId}/>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message="Thank you for your rate!"
+      />
+      <Typography variant="h6" sx={{ m: "20px 0px" }}>
+        {" "}
+        Comments
+      </Typography>
+      <Comments reviewId={selectedReview?.ID} memberId={auth.user?.memberId} />
     </Box>
   );
 }

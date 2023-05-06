@@ -43,7 +43,7 @@ function Header() {
   };
 
   return (
-    <Box
+    <Paper
       sx={{
         width: "100%",
         color: "text.primary",
@@ -65,6 +65,7 @@ function Header() {
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
       <Paper
         component="form"
+        elevation={4}
         sx={{
           p: "2px 4px",
           display: "flex",
@@ -224,7 +225,7 @@ function Header() {
           </Select>
         </FormControl>
       </Box>
-    </Box>
+    </Paper>
   );
 }
 

@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
 
   React.useEffect(() => {
     // console.log(userData);
-    console.log("review", selectedReview);
+    // console.log("review", selectedReview);
   }, [selectedReview]);
 
   return (

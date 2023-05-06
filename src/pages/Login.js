@@ -10,6 +10,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import GitHubIcon from '@mui/icons-material/GitHub';
+import ParticleBackground from "../components/ParticleBackground";
 
 function Login() {
     const [details, setDetails] = React.useState({
@@ -43,6 +44,7 @@ function Login() {
 
     return (
         <div style={{ marginTop: "5%" }}>
+            <ParticleBackground />
             <Paper
                 elavation={3}
                 style={{

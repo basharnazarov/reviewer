@@ -43,7 +43,7 @@ function Homepage(props) {
           if (response.data.message) {
             console.log(response.data.message);
           } else {
-            console.log(response.data);
+            // console.log(response.data);
             return response.data;
           }
         })
@@ -58,7 +58,7 @@ function Homepage(props) {
   return (
     <Box sx={{ display: "flex", columnGap: "10px" }}>
       <Box>
-        <Typography variant="h5">
+        <Typography variant="h5" >
           {theme.locale === "en"
             ? "Recently Added Reviews"
             : "Eng so'nggi tahlillar"}

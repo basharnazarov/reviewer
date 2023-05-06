@@ -4,35 +4,28 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import { Button } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import { useNavigate } from "react-router-dom";
-import moment from 'moment'
+import moment from "moment";
 import { useAuth } from "../auth/auth";
-
+import axios from "axios";
 
 function ReviewCard(props) {
   const navigate = useNavigate();
   const auth = useAuth();
-  const { details } = props
-
+  const { details } = props;
   return (
     <Card
       sx={{
         maxWidth: 700,
-        height: 250,
+        height: 350,
         mb: "10px",
-        "&:hover": { cursor: "pointer", opacity: "0.6" },
-      }}
-      onClick={() => {
-        localStorage.setItem("review", JSON.stringify(details));
-        const reviewData = JSON.parse(localStorage.getItem("review"));
-        auth.setSelectedReview(reviewData)
-        navigate("/review")
       }}
     >
       <CardMedia
         component="img"
-        height="90"
+        height="190"
         image={props.img}
         alt="avengers"
         sx={{
@@ -42,21 +35,40 @@ function ReviewCard(props) {
         }}
       />
       <CardContent>
-      
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="div"
+          sx={{ textDecoration: "underline", "&:hover": { cursor: "pointer" } }}
+          onClick={() => {
+            localStorage.setItem("review", JSON.stringify(details));
+            const reviewData = JSON.parse(localStorage.getItem("review"));
+            auth.setSelectedReview(reviewData);
+            navigate("/review");
+          }}
+        >
           {details.title}
         </Typography>
-        
 
         <Typography variant="body2" color="text.secondary">
-          {details.content.substring(0, 120) + '...'}
+          {details.content.substring(0, 120) + "..."}
         </Typography>
       </CardContent>
-      <CardActions sx={{ml:'2%', mr:'2%',display:'flex', justifyContent:'space-between'}}>
-       
+      <CardActions
+        sx={{
+          ml: "2%",
+          mr: "2%",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
         <Rating name="half-rating" defaultValue={4} precision={1} />
+
         <Typography variant="caption">
-          <i>Created by {details.username} on {moment(details.createdAt).format('ll')}</i>
+          <i>
+            Created by {details.username} on{" "}
+            {moment(details.createdAt).format("ll")}
+          </i>
         </Typography>
       </CardActions>
     </Card>
