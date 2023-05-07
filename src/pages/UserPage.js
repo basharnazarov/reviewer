@@ -127,9 +127,9 @@ function UserPage(props) {
           }}
         />
         <Box>
-          <Typography>Username: {auth.user?.username}</Typography>
+          <Typography>{theme.locale === 'uz' ? 'Foydalanuvchining ismi' : 'Username'}: {auth.user?.username}</Typography>
           <Typography>Email: {auth.user?.email}</Typography>
-          <Typography>CreatedAt: {moment(auth.user?.createdAt).format('LLLL')}</Typography>
+          <Typography>{theme.locale === 'uz' ? 'Ro\'yxatdan o\'tilgan sana':'CreatedAt'}: {moment(auth.user?.createdAt).format('LLLL')}</Typography>
         </Box>
       </Box>
       <Button
@@ -139,7 +139,7 @@ function UserPage(props) {
         sx={{ float: "right", mb: "10px" }}
         onClick={handleClickOpen}
       >
-        Create a new review
+        {theme.locale === 'uz' ? 'Yangisini yaratish':'Creata newone'}
       </Button>
       <Box>
         <TableContainer
@@ -149,12 +149,12 @@ function UserPage(props) {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>picture</TableCell>
-                <TableCell >title</TableCell>
-                <TableCell >content</TableCell>
-                <TableCell >createdAt</TableCell>
-                <TableCell >updatedAt</TableCell>
-                <TableCell align="center">actions</TableCell>
+                <TableCell> {theme.locale === 'uz' ? 'Rasm':'Picture'}</TableCell>
+                <TableCell >{theme.locale === 'uz' ? 'Sarlavha':'Title'}</TableCell>
+                <TableCell >{theme.locale === 'uz' ? 'Matn':'Content'}</TableCell>
+                <TableCell >{theme.locale === 'uz' ? 'Yaratildi':'CreatedAt'}</TableCell>
+                <TableCell >{theme.locale === 'uz' ? 'O\'zgartirildi':'UpdatedAt'}</TableCell>
+                <TableCell align="center"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -179,22 +179,23 @@ function UserPage(props) {
                       <TableCell component="th" scope="row" sx={{width:'120px'}}>
                         {row.updatedAt ? moment(row.updatedAt).format('ll') : ''}
                       </TableCell>
-                      <TableCell>
+                      <TableCell sx={{ width: "240px"}}>
                         <Box
                           sx={{
                             display: "flex",
                             columnGap: "4px",
-                            width: "100px",
+                           
+                            float:'right'
                           }}
                         >
                           <Button
                             size="small"
                             variant="contained"
                             color="secondary"
-                            sx={{}}
+                            
                             // onClick={handleEdit}
                           >
-                            Edit
+                            {theme.locale === 'uz' ? 'Tahrirlash':'Edit'}
                           </Button>
                           <Button
                             size="small"
@@ -202,7 +203,7 @@ function UserPage(props) {
                             color="info"
                             // onClick={handleUnBlock}
                           >
-                            Read
+                            {theme.locale === 'uz' ? 'O\'qish':'Read'}
                           </Button>
                           <Button
                             size="small"
@@ -210,7 +211,7 @@ function UserPage(props) {
                             color="error"
                             // onClick={handleDelete}
                           >
-                            Delete
+                            {theme.locale === 'uz' ? 'O\'chirish':'Delete'}
                           </Button>
                         </Box>
                       </TableCell>

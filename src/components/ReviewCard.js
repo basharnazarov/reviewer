@@ -4,17 +4,19 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Button } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useAuth } from "../auth/auth";
-import axios from "axios";
+import { useTheme } from "@mui/material/styles";
+import Tooltip from "@mui/material/Tooltip";
 
 function ReviewCard(props) {
   const navigate = useNavigate();
   const auth = useAuth();
+  const theme = useTheme();
   const { details } = props;
+
   return (
     <Card
       sx={{
@@ -62,13 +64,20 @@ function ReviewCard(props) {
           justifyContent: "space-between",
         }}
       >
-        <Rating name="half-rating" defaultValue={4} precision={1} />
+        <Rating name="half-rating" defaultValue={4} precision={1} readOnly />
 
         <Typography variant="caption">
-          <i>
-            Created by {details.username} on{" "}
-            {moment(details.createdAt).format("ll")}
-          </i>
+          {theme.locale === "uz" ? (
+            <i>
+              {details.username} tomonidan {""}
+              {moment(details.createdAt).format("ll")} sanasida yaratilgan
+            </i>
+          ) : (
+            <i>
+              Created by {details.username} on
+              {moment(details.createdAt).format("ll")}
+            </i>
+          )}
         </Typography>
       </CardActions>
     </Card>

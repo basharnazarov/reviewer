@@ -5,12 +5,13 @@ import {
   FormControl,
   TextField,
   Typography,
-  Box
+  Box,
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
 import { useAuth } from "../auth/auth";
+import { useTheme } from "@mui/material/styles";
 import moment from "moment";
 
 const tags = [
@@ -30,6 +31,7 @@ const tags = [
 
 function Comments({ reviewId, memberId }, props) {
   const auth = useAuth();
+  const theme = useTheme();
   const [newComment, setNewComment] = React.useState({
     memberId,
     reviewId,
@@ -92,15 +94,20 @@ function Comments({ reviewId, memberId }, props) {
       elevation={3}
     >
       <FormControl sx={{ width: "100%" }}>
+        {console.log(theme.locale)}
         <TextField
           onChange={(e) =>
             setNewComment({ ...newComment, content: e.target.value })
           }
-          placeholder="Leave your comment here…"
+          placeholder={
+            theme.locale === "uz"
+              ? "Izohingizni qoldiring..."
+              : "Leave your comment here..."
+          }
           InputProps={{
             endAdornment: (
               <Button sx={{ ml: "auto" }} onClick={handleCreateComment}>
-                Post
+                {theme.locale === "uz" ? "Jo'natish" : "Post"}
               </Button>
             ),
           }}
@@ -122,13 +129,16 @@ function Comments({ reviewId, memberId }, props) {
                   />
                   <Typography variant="body1">{item.content}</Typography>
                 </Stack>
-                <Typography variant="caption" sx={{float:'right'}}>
-                  posted on {moment(item.createdAt).format("lll")}
+                <Typography variant="caption" sx={{ float: "right" }}>
+                  {theme.locale === "uz" ? "Yaratilgan sana" : "Posted on"}:{" "}
+                  {moment(item.createdAt).format("lll")}
                 </Typography>
               </Box>
             );
           })
-        : "NO COMMENTS YET"}
+        : theme.locale === "uz"
+        ? "Hozircha hech qanday izohlar yo'q"
+        : "No comments yet"}
     </Paper>
   );
 }

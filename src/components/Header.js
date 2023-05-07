@@ -106,7 +106,7 @@ function Header() {
             {theme.locale === 'uz' ? 'Kirish': "Login"}
           </Button>
           <Button
-            sx={{ width: "100px" }}
+            sx={{ width: "100px", height:'30px', fontSize: theme.locale === 'uz' ? '9px':'default' }}
             size="small"
             variant="contained"
             onClick={() => navigate("/register")}

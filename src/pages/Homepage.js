@@ -58,7 +58,7 @@ function Homepage(props) {
   return (
     <Box sx={{ display: "flex", columnGap: "10px" }}>
       <Box>
-        <Typography variant="h5" >
+        <Typography variant="h5">
           {theme.locale === "en"
             ? "Recently Added Reviews"
             : "Eng so'nggi tahlillar"}
@@ -80,7 +80,9 @@ function Homepage(props) {
           rowGap: "5px",
         }}
       >
-        <Typography variant="h5">Tags Cloud</Typography>
+        <Typography variant="h5">
+          {theme.locale === "uz" ? "Teglar buluti" : "Tags Cloud"}
+        </Typography>
         <Paper
           sx={{
             width: "280px",
@@ -96,7 +98,12 @@ function Homepage(props) {
             return <Chip label={item} key={index} clickable />;
           })}
         </Paper>
-        <Typography variant="h5">Top Rated Reviews</Typography>
+        <Typography variant="h5" align="center">
+          {" "}
+          {theme.locale === "uz"
+            ? "Eng yuqori reytingdagi tahlilar"
+            : "Top Rated Reviews"}
+        </Typography>
         <Paper
           sx={{
             width: "280px",

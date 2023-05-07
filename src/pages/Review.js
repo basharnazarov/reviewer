@@ -1,20 +1,20 @@
 import React from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Rating from "@mui/material/Rating";
 import { useNavigate } from "react-router-dom";
-import { Box } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import Comments from "../components/Comments";
 import { useAuth } from "../auth/auth";
+import { useTheme } from "@mui/material/styles";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 
 function Review() {
   const navigate = useNavigate();
+  const theme = useTheme();
   const auth = useAuth();
   const { selectedReview } = auth;
   const [open, setOpen] = React.useState(false);
@@ -81,14 +81,30 @@ function Review() {
             <Typography>
               <i>{selectedReview?.username}</i>
             </Typography>
-            <Rating
-              name="half-rating"
-              defaultValue={3}
-              precision={1}
-              onChange={(e) => {
-                handleCreateRate(e.target.value);
-              }}
-            />
+            <Tooltip
+              placement="top"
+              title={
+                !!auth?.user?.auth
+                  ? ""
+                  : theme.locale === "uz"
+                  ? "Iltimos, baholash uchun ro'yxatdan o'ting!"
+                  : "Please, sign up for leaving a rate!"
+              }
+            >
+              <div>
+                <Rating
+                  name="half-rating"
+                  defaultValue={4}
+                  precision={1}
+                  readOnly={!!auth?.user?.auth ? false : true}
+                  onChange={(e) => {
+                    if (!!auth?.user?.auth) {
+                      handleCreateRate(e.target.value);
+                    }
+                  }}
+                />
+              </div>
+            </Tooltip>
           </Box>
 
           <Typography variant="body2" color="text.secondary">
@@ -100,11 +116,14 @@ function Review() {
         open={open}
         autoHideDuration={6000}
         onClose={handleClose}
-        message="Thank you for your rate!"
+        message={
+          theme.locale === "uz"
+            ? "Bahoyingiz uchun tashakkur!"
+            : "Thank you for your rate!"
+        }
       />
       <Typography variant="h6" sx={{ m: "20px 0px" }}>
-        {" "}
-        Comments
+        {theme.locale === "uz" ? "Izohlar" : "Comments"}
       </Typography>
       <Comments reviewId={selectedReview?.ID} memberId={auth.user?.memberId} />
     </Box>

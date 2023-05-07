@@ -36,7 +36,12 @@ function MainLayout({ children }) {
       <ParticleBackground />
 
       <Slide direction="left" in={visible} mountOnEnter unmountOnExit>
-        <Tooltip title="Scroll to top" placement="top">
+        <Tooltip
+          title={
+            theme.locale === "uz" ? "Sahifa boshiga qaytish" : "Scroll to top"
+          }
+          placement="top"
+        >
           <IconButton
             color="default"
             onClick={scrollToTop}
