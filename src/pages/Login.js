@@ -5,6 +5,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/auth";
+import { useTheme } from "@mui/material/styles";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import IconButton from "@mui/material/IconButton";
@@ -17,6 +18,7 @@ function Login() {
         username: "",
         password: "",
     });
+    const theme = useTheme()
     const auth = useAuth();
     const navigate = useNavigate();
 
@@ -48,7 +50,7 @@ function Login() {
             <Paper
                 elavation={3}
                 style={{
-                    maxWidth: "400px",
+                    maxWidth: "500px",
                     height: "400px",
                     margin: "auto",
                     display: "flex",
@@ -67,7 +69,7 @@ function Login() {
                 >
                     <TextField
                         id="standard-basic"
-                        label="Username"
+                        label={theme.locale === 'uz' ? 'Foydalanuvchining ismi' : 'Username'}
                         variant="standard"
                         onChange={(e) =>
                             setDetails({ ...details, username: e.target.value })
@@ -76,7 +78,7 @@ function Login() {
                     <TextField
                         id="standard-basic"
                         type="password"
-                        label="Password"
+                        label={theme.locale === 'uz' ? 'Foydalanuvchining paroli' : 'Password'}
                         variant="standard"
                         onChange={(e) =>
                             setDetails({ ...details, password: e.target.value })
@@ -87,7 +89,7 @@ function Login() {
                         component={Link}
                         onClick={handleLogin}
                     >
-                        Login
+                        {theme.locale === 'uz' ? 'Kirish': "Login"}
                     </Button>
                     <Box>
                         <Stack
@@ -95,7 +97,7 @@ function Login() {
                             spacing={1}
                             sx={{ display: "flex", alignItems: "center", justifyContent:'center' }}
                         >
-                            <Typography>Sign in with:</Typography>
+                            <Typography>{theme.locale ==='uz'? 'Quyidagilar orqali kirish': 'Sign in with'}:</Typography>
                             <IconButton color="primary" onClick={handleGoogleAuth}>
                                 <GoogleIcon />
                             </IconButton>
@@ -110,7 +112,7 @@ function Login() {
                     </Box>
 
                     <Typography>
-                       Not a member?{" "}
+                    {theme.locale ==='uz'? 'Hali ro\'yxatdan o\'tmaganmisiz' : 'Not a member yet'}?
                         <Button
                             component={Link}
                             to="/register"
@@ -118,9 +120,12 @@ function Login() {
                             size="small"
                             sx={{ml:'20px'}}
                         >
-                            Create an account
+                            {theme.locale ==='uz'? 'Ro\'yxatdan o\'tish': 'Create an account'}
                         </Button>
                     </Typography>
+                    <Typography variant="subtitle" align="center" component={Link} to='/' color={'#fff'}>
+                    {theme.locale ==='uz'? 'Bosh sahifaga qaytish': 'Go to homepage'}
+                   </Typography>
                 </Box>
             </Paper>
         </div>

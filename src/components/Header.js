@@ -19,6 +19,7 @@ import Logout from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useAuth } from "../auth/auth";
 
+
 function Header() {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -102,7 +103,7 @@ function Header() {
             variant="contained"
             onClick={() => navigate("/login")}
           >
-            Login
+            {theme.locale === 'uz' ? 'Kirish': "Login"}
           </Button>
           <Button
             sx={{ width: "100px" }}
@@ -110,7 +111,8 @@ function Header() {
             variant="contained"
             onClick={() => navigate("/register")}
           >
-            Register
+            {theme.locale === 'uz' ? 'Ro\'yxatdan o\'tish': "Register"}
+
           </Button>
         </Box>
       ) : (
@@ -179,7 +181,7 @@ function Header() {
             navigate("/user");
           }}
         >
-          <Avatar src={auth.user?.photo ? auth.user.photo : ""} /> Profile
+          <Avatar src={auth.user?.photo ? auth.user.photo : ""} /> {theme.locale === 'uz' ? 'Shaxsiy kabinet': "Profile"}
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -190,7 +192,7 @@ function Header() {
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
-          Logout
+          {theme.locale === 'uz' ? 'Chiqish': "Logout"}
         </MenuItem>
       </Menu>
 
@@ -221,7 +223,7 @@ function Header() {
             onChange={handleChange}
           >
             <MenuItem value={false}>English</MenuItem>
-            <MenuItem value={true}>Uzbek</MenuItem>
+            <MenuItem value={true}>O'zbek</MenuItem>
           </Select>
         </FormControl>
       </Box>
