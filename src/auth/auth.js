@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    // console.log("check");
+    console.log("check");
     localStorage.clear();
     window.open("http://localhost:5000/auth/logout", "_self");
     setUserData(null);
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
 
   React.useEffect(() => {
     // console.log(userData);
-    // console.log("review", selectedReview);
+    console.log("review", selectedReview);
   }, [selectedReview]);
 
   return (

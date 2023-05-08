@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useAuth } from "../auth/auth";
 import { useTheme } from "@mui/material/styles";
-import Tooltip from "@mui/material/Tooltip";
 
 function ReviewCard(props) {
   const navigate = useNavigate();
@@ -64,7 +63,7 @@ function ReviewCard(props) {
           justifyContent: "space-between",
         }}
       >
-        <Rating name="half-rating" defaultValue={4} precision={1} readOnly />
+        <Rating name="half-rating" defaultValue={details.rate} precision={1} readOnly />
 
         <Typography variant="caption">
           {theme.locale === "uz" ? (
@@ -74,7 +73,7 @@ function ReviewCard(props) {
             </i>
           ) : (
             <i>
-              Created by {details.username} on
+              Created by {details.username} on {''}
               {moment(details.createdAt).format("ll")}
             </i>
           )}

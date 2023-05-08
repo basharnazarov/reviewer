@@ -37,7 +37,7 @@ function Review() {
         {
           rate: newRate,
           memberId: auth.user?.memberId,
-          reviewId: selectedReview?.ID,
+          reviewId: selectedReview?.id,
         },
         { headers: { "x-access-token": auth?.user?.token } }
       )
@@ -58,7 +58,6 @@ function Review() {
       <Card
         sx={{
           width: "100% ",
-          textAlign: "center",
           height: "auto",
         }}
       >
@@ -75,11 +74,12 @@ function Review() {
         />
         <CardContent>
           <Box>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography gutterBottom variant="h4" component="div">
               {selectedReview?.title}
             </Typography>{" "}
-            <Typography>
-              <i>{selectedReview?.username}</i>
+            <Typography align="right">
+              {theme.locale === "uz" ? "Muallif" : "Author"}:{' '}
+              {selectedReview?.username}
             </Typography>
             <Tooltip
               placement="top"
@@ -91,10 +91,22 @@ function Review() {
                   : "Please, sign up for leaving a rate!"
               }
             >
-              <div>
+              <Box
+                sx={{
+                  display: "flex",
+                  columnGap: "4px",
+                  mb: "20px",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Typography>
+                  {theme.locale === "uz"
+                    ? "Ushbu tahlilga baho bering"
+                    : "Rate this review"}
+                </Typography>
                 <Rating
                   name="half-rating"
-                  defaultValue={4}
+                  defaultValue={selectedReview.rate}
                   precision={1}
                   readOnly={!!auth?.user?.auth ? false : true}
                   onChange={(e) => {
@@ -103,7 +115,7 @@ function Review() {
                     }
                   }}
                 />
-              </div>
+              </Box>
             </Tooltip>
           </Box>
 
@@ -125,7 +137,7 @@ function Review() {
       <Typography variant="h6" sx={{ m: "20px 0px" }}>
         {theme.locale === "uz" ? "Izohlar" : "Comments"}
       </Typography>
-      <Comments reviewId={selectedReview?.ID} memberId={auth.user?.memberId} />
+      <Comments reviewId={selectedReview?.id} memberId={auth.user?.memberId} />
     </Box>
   );
 }

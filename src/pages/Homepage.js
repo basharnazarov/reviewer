@@ -12,6 +12,7 @@ function Homepage(props) {
   const theme = useTheme();
   const auth = useAuth();
   const [allReviews, setAllReviews] = React.useState([]);
+  const [topRated, setTopRated] = React.useState([]);
 
   const tags = [
     "movies",
@@ -52,7 +53,25 @@ function Homepage(props) {
         setAllReviews(result);
       }
     };
+
+    const fetchTopRated = async () => {
+      const result = await axios
+        .get(`${process.env.REACT_APP_BASE_URL}/topRated`)
+        .then((response) => {
+          if (response.data.message) {
+            console.log(response.data.message);
+          } else {
+            // console.log(response.data);
+            return response.data;
+          }
+        })
+        .catch((err) => console.error(err));
+      if (result.length > 0) {
+        setTopRated(result);
+      }
+    };
     fetchAllReviews();
+    fetchTopRated()
   }, [props.id]);
 
   return (
@@ -66,11 +85,12 @@ function Homepage(props) {
         {allReviews.length > 0
           ? allReviews.map((item) => {
               return (
-                <ReviewCard img={images[0]} key={item.ID} details={item} />
+                <ReviewCard img={images[0]} key={item.title} details={item} />
               );
             })
           : ""}
       </Box>
+      {console.log(allReviews)}
       <Box
         sx={{
           display: "flex",
@@ -95,7 +115,7 @@ function Homepage(props) {
           }}
         >
           {tags.map((item, index) => {
-            return <Chip label={item} key={index} clickable />;
+            return <Chip label={item} key={item} clickable />;
           })}
         </Paper>
         <Typography variant="h5" align="center">
@@ -112,8 +132,8 @@ function Homepage(props) {
           }}
         >
           <ol>
-            {allReviews.length > 0
-              ? allReviews.map((item, index) => {
+            {topRated.length > 0
+              ? topRated.map((item, index) => {
                   return (
                     <Typography
                       key={item.title}
