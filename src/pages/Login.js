@@ -50,7 +50,7 @@ function Login() {
       <Paper
         elavation={3}
         style={{
-          maxWidth: "500px",
+          maxWidth: "350px",
           height: "400px",
           margin: "auto",
           display: "flex",

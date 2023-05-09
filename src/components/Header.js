@@ -18,16 +18,17 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Logout from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useAuth } from "../auth/auth";
-import useMediaQuery from '@mui/material/useMediaQuery';
-import Drawer from '@mui/material/Drawer';
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Drawer from "@mui/material/Drawer";
+import MenuIcon from "@mui/icons-material/Menu";
 
 function Header() {
   const navigate = useNavigate();
   const theme = useTheme();
   const auth = useAuth();
-  const matches = useMediaQuery('(min-width:800px)');
+  const matches = useMediaQuery("(min-width:800px)");
   const locale = JSON.parse(localStorage.getItem("locale"));
-  const [sidebar, setSidebar] = React.useState(false)
+  const [sidebar, setSidebar] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -45,88 +46,120 @@ function Header() {
     window.location.reload();
   };
 
-  const Sidebar = () => (<Box sx={{width:'250px',}}>
-     <Typography>appbar</Typography> 
-     <Typography>appbar</Typography> 
-     <Typography>appbar</Typography> 
-     <Typography>appbar</Typography> 
-     <Typography>appbar</Typography> 
-     
-  </Box>)
-
-  return (<Box>
-    {matches ? (<Paper
+  const Sidebar = () => (
+    <Box
       sx={{
-        width: "100%",
-        color: "text.primary",
-        height: "50px",
+        width: "310px",
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
-        columnGap: "3px",
-        justifyContent: "center",
+        p: "5px",
       }}
     >
-      
-      <Typography
-        variant="h6"
-        fontWeight={600}
-        onClick={() => navigate("/")}
-        sx={{ "&:hover": { cursor: "pointer" } }}
-      >
-        Reviewer
-      </Typography>
-      
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <Paper
-        component="form"
-        elevation={4}
-        sx={{
-          p: "2px 4px",
-          display: "flex",
-          alignItems: "center",
-          width: 500,
-          height: 35,
-        }}
-      >
-        <InputBase
-          sx={{ ml: 1, flex: 1 }}
-          placeholder={
-            theme.locale === 'uz'
-              ? "Kinolar, kitoblar, o'yinlar..."
-              : "e.g. Movies, Books, Games..."
-          }
-          inputProps={{ "aria-label": "search " }}
-        />
-        <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-          <SearchIcon />
-        </IconButton>
-      </Paper>
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
       {!auth.user ? (
         <Box
+          component={Paper}
+          elevation={2}
           sx={{
-            width: "190px",
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
+            justifyContent: "center",
+            rowGap: "3px",
+            borderRadius: "5px",
+            width: "100%",
+            p:'5px'
           }}
         >
-          <Button
-            sx={{ mr: "5px", width: "100px" }}
-            size="small"
-            variant="contained"
-            onClick={() => navigate("/login")}
+          <Box
+            sx={{
+              width: "190px",
+              display: "flex",
+              alignItems: "center",
+            }}
           >
-            {theme.locale === 'uz' ? 'Kirish': "Login"}
-          </Button>
-          <Button
-            sx={{ width: "100px", height:'30px', fontSize: theme.locale === 'uz' ? '9px':'default' }}
-            size="small"
-            variant="contained"
-            onClick={() => navigate("/register")}
+            <Button
+              sx={{ mr: "5px", width: "100px" }}
+              size="small"
+              variant="contained"
+              onClick={() => navigate("/login")}
+            >
+              {theme.locale === "uz" ? "Kirish" : "Login"}
+            </Button>
+            <Button
+              sx={{
+                width: "100px",
+                height: "30px",
+                fontSize: theme.locale === "uz" ? "9px" : "default",
+              }}
+              size="small"
+              variant="contained"
+              onClick={() => navigate("/register")}
+            >
+              {theme.locale === "uz" ? "Ro'yxatdan o'tish" : "Register"}
+            </Button>
+          </Box>
+          <Divider sx={{ width: "95%" }} />
+          <Box
+            sx={{ display: "flex", alignItems: "center", columnGap: "10px" }}
           >
-            {theme.locale === 'uz' ? 'Ro\'yxatdan o\'tish': "Register"}
-
-          </Button>
+            <IconButton
+              color="inherit"
+              onClick={() => {
+                if (theme.palette.mode === "light") {
+                  localStorage.setItem("mode", JSON.stringify(false));
+                } else {
+                  localStorage.setItem("mode", JSON.stringify(true));
+                }
+                window.location.reload();
+              }}
+            >
+              {theme.palette.mode === "dark" ? (
+                <Brightness7Icon />
+              ) : (
+                <Brightness4Icon />
+              )}
+            </IconButton>
+            <Divider sx={{ height: 22 }} orientation="vertical" />
+            <Box sx={{ minWidth: 60, borderRadius: "5px" }}>
+              <FormControl fullWidth>
+                <Select
+                  sx={{ height: "30px" }}
+                  value={Boolean(locale)}
+                  onChange={handleChange}
+                >
+                  <MenuItem value={false}>Eng</MenuItem>
+                  <MenuItem value={true}>O'z</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </Box>
+          <Divider sx={{ width: "95%" }} />
+          <Paper
+            component="form"
+            elevation={4}
+            sx={{
+              p: "2px 4px",
+              display: "flex",
+              alignItems: "center",
+              width: "90%",
+              height: 35,
+              mb: "10px",
+            }}
+          >
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder={
+                theme.locale === "uz"
+                  ? "Kinolar, kitoblar, o'yinlar..."
+                  : "e.g. Movies, Books, Games..."
+              }
+              inputProps={{ "aria-label": "search " }}
+            />
+            <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+              <SearchIcon />
+            </IconButton>
+          </Paper>
         </Box>
       ) : (
         <Box
@@ -134,55 +167,275 @@ function Header() {
           elevation={2}
           sx={{
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
-            justifyContent: "space-between",
-
-            p: "4px 4px 4px 6px",
+            justifyContent: "center",
+            rowGap: "3px",
             borderRadius: "5px",
-            width: "190px",
+            width: "100%",
           }}
         >
-          <Typography sx={{ ml: "20px" }}>{auth.user.username}</Typography>
-          <Box sx={{ display: "flex" }}>
+          <Box
+            sx={{ display: "flex", alignItems: "center", columnGap: "10px" }}
+          >
+            <Typography sx={{ ml: "20px" }}>{auth.user.username}</Typography>
             <Divider sx={{ height: 22 }} orientation="vertical" />
-            <KeyboardArrowDownIcon
-              onClick={handleClick}
-              sx={{ "&:hover": { cursor: "pointer" } }}
-            />
+            <IconButton
+              color="inherit"
+              onClick={() => {
+                if (theme.palette.mode === "light") {
+                  localStorage.setItem("mode", JSON.stringify(false));
+                } else {
+                  localStorage.setItem("mode", JSON.stringify(true));
+                }
+                window.location.reload();
+              }}
+            >
+              {theme.palette.mode === "dark" ? (
+                <Brightness7Icon />
+              ) : (
+                <Brightness4Icon />
+              )}
+            </IconButton>
+            <Divider sx={{ height: 22 }} orientation="vertical" />
+            <Box sx={{ minWidth: 60, borderRadius: "5px" }}>
+              <FormControl fullWidth>
+                <Select
+                  sx={{ height: "30px" }}
+                  value={Boolean(locale)}
+                  onChange={handleChange}
+                >
+                  <MenuItem value={false}>Eng</MenuItem>
+                  <MenuItem value={true}>O'z</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
           </Box>
+          <Divider sx={{ width: "95%" }} />
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              navigate("/user");
+            }}
+          >
+            <ListItemIcon>
+              <Avatar
+                sx={{ mr: "15px" }}
+                src={auth.user?.photo ? auth.user.photo : ""}
+              />
+            </ListItemIcon>{" "}
+            {theme.locale === "uz" ? "Shaxsiy kabinet" : "Profile"}
+          </MenuItem>
+          <Divider sx={{ width: "95%" }} />
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              auth.logout();
+            }}
+          >
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            {theme.locale === "uz" ? "Chiqish" : "Logout"}
+          </MenuItem>
+          <Divider sx={{ width: "95%" }} />
+          <Paper
+            component="form"
+            elevation={4}
+            sx={{
+              p: "2px 4px",
+              display: "flex",
+              alignItems: "center",
+              width: "90%",
+              height: 35,
+              mb: "10px",
+            }}
+          >
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder={
+                theme.locale === "uz"
+                  ? "Kinolar, kitoblar, o'yinlar..."
+                  : "e.g. Movies, Books, Games..."
+              }
+              inputProps={{ "aria-label": "search " }}
+            />
+            <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+              <SearchIcon />
+            </IconButton>
+          </Paper>
         </Box>
       )}
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <IconButton
-        color="inherit"
-        onClick={() => {
-          if (theme.palette.mode === "light") {
-            localStorage.setItem("mode", JSON.stringify(false));
-          } else {
-            localStorage.setItem("mode", JSON.stringify(true));
-          }
-          window.location.reload();
-        }}
-      >
-        {theme.palette.mode === "dark" ? (
-          <Brightness7Icon />
-        ) : (
-          <Brightness4Icon />
-        )}
-      </IconButton>
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <Box sx={{ minWidth: 120, borderRadius: "5px" }}>
-        <FormControl fullWidth>
-          <Select
-            sx={{ height: "30px" }}
-            value={Boolean(locale)}
-            onChange={handleChange}
+    </Box>
+  );
+
+  return (
+    <Box>
+      {matches ? (
+        <Paper
+          sx={{
+            width: "100%",
+            color: "text.primary",
+            height: "50px",
+            display: "flex",
+            alignItems: "center",
+            columnGap: "3px",
+            justifyContent: "center",
+          }}
+        >
+          <Typography
+            variant="h6"
+            fontWeight={600}
+            onClick={() => navigate("/")}
+            sx={{ "&:hover": { cursor: "pointer" } }}
           >
-            <MenuItem value={false}>English</MenuItem>
-            <MenuItem value={true}>O'zbek</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
+            Reviewer
+          </Typography>
+
+          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+          <Paper
+            component="form"
+            elevation={4}
+            sx={{
+              p: "2px 4px",
+              display: "flex",
+              alignItems: "center",
+              width: 500,
+              height: 35,
+            }}
+          >
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder={
+                theme.locale === "uz"
+                  ? "Kinolar, kitoblar, o'yinlar..."
+                  : "e.g. Movies, Books, Games..."
+              }
+              inputProps={{ "aria-label": "search " }}
+            />
+            <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+              <SearchIcon />
+            </IconButton>
+          </Paper>
+          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+          {!auth.user ? (
+            <Box
+              sx={{
+                width: "190px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Button
+                sx={{ mr: "5px", width: "100px" }}
+                size="small"
+                variant="contained"
+                onClick={() => navigate("/login")}
+              >
+                {theme.locale === "uz" ? "Kirish" : "Login"}
+              </Button>
+              <Button
+                sx={{
+                  width: "100px",
+                  height: "30px",
+                  fontSize: theme.locale === "uz" ? "9px" : "default",
+                }}
+                size="small"
+                variant="contained"
+                onClick={() => navigate("/register")}
+              >
+                {theme.locale === "uz" ? "Ro'yxatdan o'tish" : "Register"}
+              </Button>
+            </Box>
+          ) : (
+            <Box
+              component={Paper}
+              elevation={2}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+
+                p: "4px 4px 4px 6px",
+                borderRadius: "5px",
+                width: "190px",
+              }}
+            >
+              <Typography sx={{ ml: "20px" }}>{auth.user.username}</Typography>
+              <Box sx={{ display: "flex" }}>
+                <Divider sx={{ height: 22 }} orientation="vertical" />
+                <KeyboardArrowDownIcon
+                  onClick={handleClick}
+                  sx={{ "&:hover": { cursor: "pointer" } }}
+                />
+              </Box>
+            </Box>
+          )}
+          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+          <IconButton
+            color="inherit"
+            onClick={() => {
+              if (theme.palette.mode === "light") {
+                localStorage.setItem("mode", JSON.stringify(false));
+              } else {
+                localStorage.setItem("mode", JSON.stringify(true));
+              }
+              window.location.reload();
+            }}
+          >
+            {theme.palette.mode === "dark" ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
+          </IconButton>
+          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+          <Box sx={{ minWidth: 120, borderRadius: "5px" }}>
+            <FormControl fullWidth>
+              <Select
+                sx={{ height: "30px" }}
+                value={Boolean(locale)}
+                onChange={handleChange}
+              >
+                <MenuItem value={false}>English</MenuItem>
+                <MenuItem value={true}>O'zbek</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </Paper>
+      ) : (
+        <Paper
+          sx={{
+            width: "100%",
+            color: "text.primary",
+            height: "50px",
+            display: "flex",
+            alignItems: "center",
+            p: "10px",
+            justifyContent: "space-between",
+          }}
+        >
+          <Drawer
+            anchor={"right"}
+            open={sidebar}
+            onClose={() => setSidebar(false)}
+          >
+            <Sidebar />
+          </Drawer>
+          <Typography
+            variant="h6"
+            fontWeight={600}
+            onClick={() => navigate("/")}
+            sx={{ "&:hover": { cursor: "pointer" } }}
+          >
+            Reviewer
+          </Typography>
+          <IconButton onClick={() => setSidebar(true)}>
+            {" "}
+            <MenuIcon />
+          </IconButton>
+        </Paper>
+      )}
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
@@ -195,6 +448,7 @@ function Header() {
             overflow: "visible",
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             mt: 1.5,
+
             "& .MuiAvatar-root": {
               width: 32,
               height: 32,
@@ -224,7 +478,8 @@ function Header() {
             navigate("/user");
           }}
         >
-          <Avatar src={auth.user?.photo ? auth.user.photo : ""} /> {theme.locale === 'uz' ? 'Shaxsiy kabinet': "Profile"}
+          <Avatar src={auth.user?.photo ? auth.user.photo : ""} />{" "}
+          {theme.locale === "uz" ? "Shaxsiy kabinet" : "Profile"}
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -235,41 +490,11 @@ function Header() {
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
-          {theme.locale === 'uz' ? 'Chiqish': "Logout"}
+          {theme.locale === "uz" ? "Chiqish" : "Logout"}
         </MenuItem>
       </Menu>
-    </Paper>) : (
-      <Paper
-      sx={{
-        width: "100%",
-        color: "text.primary",
-        height: "50px",
-        display: "flex",
-        alignItems: "center",
-        columnGap: "3px",
-        justifyContent: "space-between",
-      }}
-    >
-      <Drawer anchor={'right'} open={sidebar} onClose={()=>setSidebar(false)}>
-        <Sidebar />
-      </Drawer>
-      <Typography
-        variant="h6"
-        fontWeight={600}
-        onClick={() => navigate("/")}
-        sx={{ "&:hover": { cursor: "pointer" } }}
-      >
-        Reviewer
-      </Typography>
-      <Button onClick={()=>setSidebar(true)}>toggle</Button>
-
-    </Paper>
-
-    )}
-  </Box>)
-    
-    
-  
+    </Box>
+  );
 }
 
 export default Header;

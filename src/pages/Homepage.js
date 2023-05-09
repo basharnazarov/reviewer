@@ -77,7 +77,7 @@ function Homepage(props) {
   }, [props.id]);
 
   return (
-    <Box sx={{ display: "flex", flexDirection: matches ?'row':'column', gap:'10px'}}>
+    <Box sx={{ display: "flex", flexDirection: matches ?'row':'column', gap:'10px', p:'10px'}}>
       <Box>
         <Typography variant="h5">
           {theme.locale === "en"
@@ -92,13 +92,13 @@ function Homepage(props) {
             })
           : ""}
       </Box>
-      {console.log(allReviews)}
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          width: "30%",
+       
+          width: "auto",
           rowGap: "5px",
         }}
       >

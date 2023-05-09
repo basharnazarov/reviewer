@@ -38,7 +38,7 @@ function Register() {
       <Paper
         elavation={3}
         style={{
-          maxWidth: "400px",
+          maxWidth: "350px",
           height: "400px",
           margin: "auto",
           padding: "5px",
@@ -58,6 +58,7 @@ function Register() {
             label={
               theme.locale === "uz" ? "Foydalanuvchining ismi" : "Username"
             }
+            
             variant="standard"
             onChange={(e) =>
               setDetails({ ...details, username: e.target.value })
@@ -72,7 +73,7 @@ function Register() {
           <TextField
             type="password"
             label={
-              theme.locale === "uz" ? "Foydalanuvchining paroli" : "Password"
+              theme.locale === "uz" ? "Parol" : "Password"
             }
             variant="standard"
             onChange={(e) =>
@@ -87,7 +88,7 @@ function Register() {
             align="center"
             component={Link}
             to="/"
-            color={"#fff"}
+            
           >
             {theme.locale === "uz" ? "Bosh sahifaga qaytish" : "Go to homepage"}
           </Typography>

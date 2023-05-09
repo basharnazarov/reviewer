@@ -57,7 +57,7 @@ function Review() {
     >
       <Card
         sx={{
-          width: "100% ",
+          width: "95% ",
           height: "auto",
         }}
       >
