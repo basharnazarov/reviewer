@@ -18,14 +18,16 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Logout from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useAuth } from "../auth/auth";
-
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Drawer from '@mui/material/Drawer';
 
 function Header() {
   const navigate = useNavigate();
   const theme = useTheme();
   const auth = useAuth();
+  const matches = useMediaQuery('(min-width:800px)');
   const locale = JSON.parse(localStorage.getItem("locale"));
-
+  const [sidebar, setSidebar] = React.useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -43,8 +45,17 @@ function Header() {
     window.location.reload();
   };
 
-  return (
-    <Paper
+  const Sidebar = () => (<Box sx={{width:'250px',}}>
+     <Typography>appbar</Typography> 
+     <Typography>appbar</Typography> 
+     <Typography>appbar</Typography> 
+     <Typography>appbar</Typography> 
+     <Typography>appbar</Typography> 
+     
+  </Box>)
+
+  return (<Box>
+    {matches ? (<Paper
       sx={{
         width: "100%",
         color: "text.primary",
@@ -55,6 +66,7 @@ function Header() {
         justifyContent: "center",
       }}
     >
+      
       <Typography
         variant="h6"
         fontWeight={600}
@@ -63,6 +75,7 @@ function Header() {
       >
         Reviewer
       </Typography>
+      
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
       <Paper
         component="form"
@@ -139,7 +152,37 @@ function Header() {
           </Box>
         </Box>
       )}
-
+      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      <IconButton
+        color="inherit"
+        onClick={() => {
+          if (theme.palette.mode === "light") {
+            localStorage.setItem("mode", JSON.stringify(false));
+          } else {
+            localStorage.setItem("mode", JSON.stringify(true));
+          }
+          window.location.reload();
+        }}
+      >
+        {theme.palette.mode === "dark" ? (
+          <Brightness7Icon />
+        ) : (
+          <Brightness4Icon />
+        )}
+      </IconButton>
+      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      <Box sx={{ minWidth: 120, borderRadius: "5px" }}>
+        <FormControl fullWidth>
+          <Select
+            sx={{ height: "30px" }}
+            value={Boolean(locale)}
+            onChange={handleChange}
+          >
+            <MenuItem value={false}>English</MenuItem>
+            <MenuItem value={true}>O'zbek</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
@@ -195,40 +238,38 @@ function Header() {
           {theme.locale === 'uz' ? 'Chiqish': "Logout"}
         </MenuItem>
       </Menu>
-
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <IconButton
-        color="inherit"
-        onClick={() => {
-          if (theme.palette.mode === "light") {
-            localStorage.setItem("mode", JSON.stringify(false));
-          } else {
-            localStorage.setItem("mode", JSON.stringify(true));
-          }
-          window.location.reload();
-        }}
+    </Paper>) : (
+      <Paper
+      sx={{
+        width: "100%",
+        color: "text.primary",
+        height: "50px",
+        display: "flex",
+        alignItems: "center",
+        columnGap: "3px",
+        justifyContent: "space-between",
+      }}
+    >
+      <Drawer anchor={'right'} open={sidebar} onClose={()=>setSidebar(false)}>
+        <Sidebar />
+      </Drawer>
+      <Typography
+        variant="h6"
+        fontWeight={600}
+        onClick={() => navigate("/")}
+        sx={{ "&:hover": { cursor: "pointer" } }}
       >
-        {theme.palette.mode === "dark" ? (
-          <Brightness7Icon />
-        ) : (
-          <Brightness4Icon />
-        )}
-      </IconButton>
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <Box sx={{ minWidth: 120, borderRadius: "5px" }}>
-        <FormControl fullWidth>
-          <Select
-            sx={{ height: "30px" }}
-            value={Boolean(locale)}
-            onChange={handleChange}
-          >
-            <MenuItem value={false}>English</MenuItem>
-            <MenuItem value={true}>O'zbek</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
+        Reviewer
+      </Typography>
+      <Button onClick={()=>setSidebar(true)}>toggle</Button>
+
     </Paper>
-  );
+
+    )}
+  </Box>)
+    
+    
+  
 }
 
 export default Header;

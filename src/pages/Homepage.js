@@ -4,6 +4,7 @@ import ReviewCard from "../components/ReviewCard";
 import Chip from "@mui/material/Chip";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import useMediaQuery from '@mui/material/useMediaQuery';
 import axios from "axios";
 import { useAuth } from "../auth/auth";
 
@@ -11,6 +12,7 @@ function Homepage(props) {
   const navigate = useNavigate();
   const theme = useTheme();
   const auth = useAuth();
+  const matches = useMediaQuery('(min-width:800px)');
   const [allReviews, setAllReviews] = React.useState([]);
   const [topRated, setTopRated] = React.useState([]);
 
@@ -75,7 +77,7 @@ function Homepage(props) {
   }, [props.id]);
 
   return (
-    <Box sx={{ display: "flex", columnGap: "10px" }}>
+    <Box sx={{ display: "flex", flexDirection: matches ?'row':'column', gap:'10px'}}>
       <Box>
         <Typography variant="h5">
           {theme.locale === "en"
