@@ -23,15 +23,15 @@ function Login() {
   const navigate = useNavigate();
 
   const handleGoogleAuth = () => {
-    window.open("http://localhost:5000/auth/google", "_self");
+    window.open(`${process.env.REACT_APP_BASE_URL}/auth/google`, "_self");
   };
 
   const handleFacebookLogin = () => {
-    window.open("http://localhost:5000/auth/facebook", "_self");
+    window.open(`${process.env.REACT_APP_BASE_URL}/auth/facebook`, "_self");
   };
 
   const handleGithubLogin = () => {
-    window.open("http://localhost:5000/auth/github", "_self");
+    window.open(`${process.env.REACT_APP_BASE_URL}/auth/github`, "_self");
   };
 
   const handleLogin = (e) => {

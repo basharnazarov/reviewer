@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     // console.log("check");
     localStorage.clear();
-    window.open("http://localhost:5000/auth/logout", "_self");
+    window.open(`${process.env.REACT_APP_BASE_URL}/auth/logout`, "_self");
     setUserData(null);
   };
 

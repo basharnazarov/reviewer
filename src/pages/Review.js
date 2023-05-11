@@ -12,7 +12,7 @@ import { useTheme } from "@mui/material/styles";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import Badge from "@mui/material/Badge";
 
 function Review() {
@@ -70,7 +70,7 @@ function Review() {
         if (response.data.message) {
           console.log(response.data.message);
         } else {
-        //  console.log('liked')
+          //  console.log('liked')
         }
       })
       .catch((err) => console.error(err));
@@ -106,79 +106,83 @@ function Review() {
               {theme.locale === "uz" ? "Muallif" : "Author"}:{" "}
               {selectedReview?.username}
             </Typography>
-            <Tooltip
-              placement="top"
-              title={
-                !!auth?.user?.auth
-                  ? ""
-                  : theme.locale === "uz"
-                  ? "Iltimos, baholash uchun ro'yxatdan o'ting!"
-                  : "Please, sign up for leaving a rate!"
-              }
+            <Box
+              sx={{
+                display: "flex",
+                columnGap: "4px",
+                mb: "20px",
+                justifyContent: "flex-end",
+              }}
             >
-              <Box
-                sx={{
-                  display: "flex",
-                  columnGap: "4px",
-                  mb: "20px",
-                  justifyContent: "flex-end",
-                }}
+              <Typography>
+                {theme.locale === "uz"
+                  ? "Ushbu tahlilga baho bering"
+                  : "Rate this review"}
+              </Typography>
+              <Tooltip
+                placement="top"
+                title={
+                  !!auth?.user?.auth
+                    ? ""
+                    : theme.locale === "uz"
+                    ? "Iltimos, baholash uchun ro'yxatdan o'ting!"
+                    : "Please, sign up for leaving a rate!"
+                }
               >
-                <Typography>
-                  {theme.locale === "uz"
-                    ? "Ushbu tahlilga baho bering"
-                    : "Rate this review"}
-                </Typography>
-                <Rating
-                  name="half-rating"
-                  defaultValue={Math.round(selectedReview.rate)}
-                  precision={1}
-                  readOnly={!!auth?.user?.auth ? false : true}
-                  onChange={(e) => {
-                    if (!!auth?.user?.auth) {
-                      handleCreateRate(e.target.value);
-                    }
-                  }}
-                />
-              </Box>
-            </Tooltip>
-            <Tooltip
-              placement="bottom"
-              title={
-                !!auth?.user?.auth
-                  ? ""
-                  : theme.locale === "uz"
-                  ? "Iltimos, like bosish ro'yxatdan o'ting!"
-                  : "Please, sign up for leaving a like!"
-              }
+                <div>
+                  <Rating
+                    name="half-rating"
+                    defaultValue={Math.round(selectedReview.rate)}
+                    precision={1}
+                    readOnly={!!auth?.user?.auth ? false : true}
+                    onChange={(e) => {
+                      if (!!auth?.user?.auth) {
+                        handleCreateRate(e.target.value);
+                      }
+                    }}
+                  />
+                </div>
+              </Tooltip>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                columnGap: "4px",
+                mb: "20px",
+                justifyContent: "flex-end",
+                alignItems: "center",
+              }}
             >
-              <Box
-                sx={{
-                  display: "flex",
-                  columnGap: "4px",
-                  mb: "20px",
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                }}
+              <Typography>
+                {theme.locale === "uz" ? "Yoqdi" : "Like"}
+              </Typography>
+
+              <Tooltip
+                placement="bottom"
+                title={
+                  !!auth?.user?.auth
+                    ? ""
+                    : theme.locale === "uz"
+                    ? "Iltimos, like bosish ro'yxatdan o'ting!"
+                    : "Please, sign up for leaving a like!"
+                }
               >
-                <Typography>
-                  {theme.locale === "uz" ? "Yoqdi" : "Like"}
-                </Typography>
-                <IconButton onClick={()=>handleCreateLike('1')}>
+                <IconButton onClick={() => handleCreateLike("1")}>
                   <Badge badgeContent={4} color="primary">
                     <ThumbUpIcon fontSize="medium" />
                   </Badge>
                 </IconButton>
-                <IconButton onClick={()=>handleCreateLike('0')}>
-                  <Badge badgeContent={4} color="primary">
-                    <ThumbDownIcon fontSize="medium" />
-                  </Badge>
-                </IconButton>
-                <Typography>
-                  {theme.locale === "uz" ? "Yoqmadi" : "Dislike"}
-                </Typography>
-              </Box>
-            </Tooltip>
+              </Tooltip>
+              <IconButton onClick={() => handleCreateLike("0")}>
+                <Badge badgeContent={4} color="primary">
+                  <ThumbDownIcon fontSize="medium" />
+                </Badge>
+              </IconButton>
+
+              <Typography>
+                {theme.locale === "uz" ? "Yoqmadi" : "Dislike"}
+              </Typography>
+            </Box>
           </Box>
 
           <Typography variant="body2" color="text.secondary">

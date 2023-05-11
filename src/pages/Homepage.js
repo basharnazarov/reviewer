@@ -51,7 +51,7 @@ function Homepage(props) {
           }
         })
         .catch((err) => console.error(err));
-      if (result.length > 0) {
+      if (result?.length > 0) {
         setAllReviews(result);
       }
     };
@@ -68,7 +68,7 @@ function Homepage(props) {
           }
         })
         .catch((err) => console.error(err));
-      if (result.length > 0) {
+      if (result?.length > 0) {
         setTopRated(result);
       }
     };
