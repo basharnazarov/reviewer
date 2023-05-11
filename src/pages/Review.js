@@ -5,12 +5,15 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Rating from "@mui/material/Rating";
 import { useNavigate } from "react-router-dom";
-import { Box, Tooltip } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import Comments from "../components/Comments";
 import { useAuth } from "../auth/auth";
 import { useTheme } from "@mui/material/styles";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import Badge from "@mui/material/Badge";
 
 function Review() {
   const navigate = useNavigate();
@@ -18,6 +21,7 @@ function Review() {
   const auth = useAuth();
   const { selectedReview } = auth;
   const [open, setOpen] = React.useState(false);
+  // const [like, setLike] = React.useState(false);
 
   const handleClick = () => {
     setOpen(true);
@@ -51,6 +55,27 @@ function Review() {
       .catch((err) => console.error(err));
   };
 
+  const handleCreateLike = (newLike) => {
+    axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL}/createLike`,
+        {
+          like: newLike,
+          memberId: auth.user?.memberId,
+          reviewId: selectedReview?.id,
+        },
+        { headers: { "x-access-token": auth?.user?.token } }
+      )
+      .then((response) => {
+        if (response.data.message) {
+          console.log(response.data.message);
+        } else {
+        //  console.log('liked')
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+
   return (
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
@@ -78,7 +103,7 @@ function Review() {
               {selectedReview?.title}
             </Typography>{" "}
             <Typography align="right">
-              {theme.locale === "uz" ? "Muallif" : "Author"}:{' '}
+              {theme.locale === "uz" ? "Muallif" : "Author"}:{" "}
               {selectedReview?.username}
             </Typography>
             <Tooltip
@@ -106,7 +131,7 @@ function Review() {
                 </Typography>
                 <Rating
                   name="half-rating"
-                  defaultValue={selectedReview.rate}
+                  defaultValue={Math.round(selectedReview.rate)}
                   precision={1}
                   readOnly={!!auth?.user?.auth ? false : true}
                   onChange={(e) => {
@@ -115,6 +140,43 @@ function Review() {
                     }
                   }}
                 />
+              </Box>
+            </Tooltip>
+            <Tooltip
+              placement="bottom"
+              title={
+                !!auth?.user?.auth
+                  ? ""
+                  : theme.locale === "uz"
+                  ? "Iltimos, like bosish ro'yxatdan o'ting!"
+                  : "Please, sign up for leaving a like!"
+              }
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  columnGap: "4px",
+                  mb: "20px",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                }}
+              >
+                <Typography>
+                  {theme.locale === "uz" ? "Yoqdi" : "Like"}
+                </Typography>
+                <IconButton onClick={()=>handleCreateLike('1')}>
+                  <Badge badgeContent={4} color="primary">
+                    <ThumbUpIcon fontSize="medium" />
+                  </Badge>
+                </IconButton>
+                <IconButton onClick={()=>handleCreateLike('0')}>
+                  <Badge badgeContent={4} color="primary">
+                    <ThumbDownIcon fontSize="medium" />
+                  </Badge>
+                </IconButton>
+                <Typography>
+                  {theme.locale === "uz" ? "Yoqmadi" : "Dislike"}
+                </Typography>
               </Box>
             </Tooltip>
           </Box>

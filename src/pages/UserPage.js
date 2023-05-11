@@ -139,7 +139,7 @@ function UserPage(props) {
         sx={{ float: "right", mb: "10px" }}
         onClick={handleClickOpen}
       >
-        {theme.locale === 'uz' ? 'Yangisini yaratish':'Creata a review'}
+        {theme.locale === 'uz' ? 'Yangisini yaratish':'Creata a reviewy'}
       </Button>
       <Box>
         <TableContainer

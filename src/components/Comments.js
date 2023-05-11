@@ -94,7 +94,6 @@ function Comments({ reviewId, memberId }, props) {
       elevation={3}
     >
       <FormControl sx={{ width: "100%" }}>
-        {console.log(theme.locale)}
         <TextField
           onChange={(e) =>
             setNewComment({ ...newComment, content: e.target.value })

@@ -355,13 +355,13 @@ function Header() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-
                 p: "4px 4px 4px 6px",
                 borderRadius: "5px",
                 width: "190px",
+                height: '35px'
               }}
             >
-              <Typography sx={{ ml: "20px" }}>{auth.user.username}</Typography>
+              <Typography sx={{ ml: "10px", fontSize:'14px' }}>{auth.user.username}</Typography>
               <Box sx={{ display: "flex" }}>
                 <Divider sx={{ height: 22 }} orientation="vertical" />
                 <KeyboardArrowDownIcon
