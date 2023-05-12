@@ -3,7 +3,7 @@ import React from "react";
 
 function Footer() {
     return (
-        <Box
+        <Paper
             sx={{
                 width: "100%",
                 color: "text.primary",
@@ -12,10 +12,11 @@ function Footer() {
                 alignItems: "center",
                 columnGap: "3px",
                 justifyContent: "center",
+                height:'auto'
             }}
         >
-            Footer
-        </Box>
+            All rights reserved Copyright &copy; 2023
+        </Paper>
     );
 }
 
