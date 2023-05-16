@@ -12,7 +12,7 @@ function Footer() {
                 alignItems: "center",
                 columnGap: "3px",
                 justifyContent: "center",
-                height:'auto'
+                minHeight:'7vh'
             }}
         >
             All rights reserved Copyright &copy; 2023

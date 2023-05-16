@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import moment from 'moment'
+import moment from "moment";
 import {
   Paper,
   Typography,
@@ -12,6 +12,9 @@ import {
   Toolbar,
   IconButton,
   TextField,
+  Select,
+  FormControl,
+  MenuItem,
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { useTheme } from "@mui/material/styles";
@@ -24,13 +27,6 @@ import TableRow from "@mui/material/TableRow";
 import { useAuth } from "../auth/auth";
 import CloseIcon from "@mui/icons-material/Close";
 
-const images = [
-  "https://www.dropbox.com/s/3rdzhzy76h9bmk8/reviewer.png?raw=1",
-  "https://www.dropbox.com/s/ncyb0qbgt3dg67h/avengers.jpg?raw=1",
-  "https://www.dropbox.com/s/2we1xngtno7004r/godofwar.jpg?raw=1",
-  "https://www.dropbox.com/s/xr9eom0uq60v4ca/harrypotter.jpg?raw=1",
-];
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -40,6 +36,7 @@ function UserPage(props) {
   const theme = useTheme();
   const [reviewDetails, setReviewDetails] = React.useState({
     title: "",
+    category: "",
     content: "",
     memberId: auth.user?.memberId,
   });
@@ -60,6 +57,7 @@ function UserPage(props) {
         `${process.env.REACT_APP_BASE_URL}/createReview`,
         {
           title: reviewDetails.title,
+          category: reviewDetails.category,
           content: reviewDetails.content,
           memberId: reviewDetails.memberId,
         },
@@ -76,9 +74,6 @@ function UserPage(props) {
       .catch((err) => console.error(err));
   };
 
- 
-
-
   React.useEffect(() => {
     const fetchReviews = async () => {
       const result = await axios
@@ -93,17 +88,17 @@ function UserPage(props) {
           if (response.data.message) {
             console.log(response.data.message);
           } else {
-            console.log(response.data)
-           return response.data
+            console.log(response.data);
+            return response.data;
           }
         })
         .catch((err) => console.error(err));
-        if(result.length > 0){
-          setReviews(result)
-        }
+      if (result.length > 0) {
+        setReviews(result);
+      }
     };
-    fetchReviews()
-  },[props.id]);
+    fetchReviews();
+  }, [props.id]);
 
   return (
     <Paper elevation={3} sx={{ p: "30px" }}>
@@ -127,9 +122,15 @@ function UserPage(props) {
           }}
         />
         <Box>
-          <Typography>{theme.locale === 'uz' ? 'Foydalanuvchining ismi' : 'Username'}: {auth.user?.username}</Typography>
+          <Typography>
+            {theme.locale === "uz" ? "Foydalanuvchining ismi" : "Username"}:{" "}
+            {auth.user?.username}
+          </Typography>
           <Typography>Email: {auth.user?.email}</Typography>
-          <Typography>{theme.locale === 'uz' ? 'Ro\'yxatdan o\'tilgan sana':'CreatedAt'}: {moment(auth.user?.createdAt).format('LLLL')}</Typography>
+          <Typography>
+            {theme.locale === "uz" ? "Ro'yxatdan o'tilgan sana" : "CreatedAt"}:{" "}
+            {moment(auth.user?.createdAt).format("LLLL")}
+          </Typography>
         </Box>
       </Box>
       <Button
@@ -139,7 +140,7 @@ function UserPage(props) {
         sx={{ float: "right", mb: "10px" }}
         onClick={handleClickOpen}
       >
-        {theme.locale === 'uz' ? 'Yangisini yaratish':'Creata a review'}
+        {theme.locale === "uz" ? "Yangisini yaratish" : "Creata a review"}
       </Button>
       <Box>
         <TableContainer
@@ -149,11 +150,22 @@ function UserPage(props) {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell> {theme.locale === 'uz' ? 'Rasm':'Picture'}</TableCell>
-                <TableCell >{theme.locale === 'uz' ? 'Sarlavha':'Title'}</TableCell>
-                <TableCell >{theme.locale === 'uz' ? 'Matn':'Content'}</TableCell>
-                <TableCell >{theme.locale === 'uz' ? 'Yaratildi':'CreatedAt'}</TableCell>
-                <TableCell >{theme.locale === 'uz' ? 'O\'zgartirildi':'UpdatedAt'}</TableCell>
+                <TableCell>
+                  {" "}
+                  {theme.locale === "uz" ? "Rasm" : "Picture"}
+                </TableCell>
+                <TableCell>
+                  {theme.locale === "uz" ? "Sarlavha" : "Title"}
+                </TableCell>
+                <TableCell>
+                  {theme.locale === "uz" ? "Matn" : "Content"}
+                </TableCell>
+                <TableCell>
+                  {theme.locale === "uz" ? "Yaratildi" : "CreatedAt"}
+                </TableCell>
+                <TableCell>
+                  {theme.locale === "uz" ? "O'zgartirildi" : "UpdatedAt"}
+                </TableCell>
                 <TableCell align="center"></TableCell>
               </TableRow>
             </TableHead>
@@ -171,31 +183,45 @@ function UserPage(props) {
                       <TableCell component="th" scope="row">
                         <Avatar alt="avatar" src={row} variant="square" />
                       </TableCell>
-                      <TableCell >{row?.title.substring(0,10)+'...'}</TableCell>
-                      <TableCell component="th" scope="row"  sx={{width:'150px'}}>
-                        {row.content.substring(0,10)+'...'}
+                      <TableCell>
+                        {row?.title.substring(0, 10) + "..."}
                       </TableCell>
-                      <TableCell sx={{width:'120px'}}>{moment(row.createdAt).format('ll')}</TableCell>
-                      <TableCell component="th" scope="row" sx={{width:'120px'}}>
-                        {row.updatedAt ? moment(row.updatedAt).format('ll') : ''}
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{ width: "150px" }}
+                      >
+                        {row.content.substring(0, 10) + "..."}
                       </TableCell>
-                      <TableCell sx={{ width: "240px"}}>
+                      <TableCell sx={{ width: "120px" }}>
+                        {moment(row.createdAt).format("ll")}
+                      </TableCell>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{ width: "120px" }}
+                      >
+                        {row.updatedAt
+                          ? moment(row.updatedAt).format("ll")
+                          : ""}
+                      </TableCell>
+                      <TableCell sx={{ width: "240px" }}>
                         <Box
                           sx={{
                             display: "flex",
                             columnGap: "4px",
-                           
-                            float:'right'
+
+                            float: "right",
                           }}
                         >
                           <Button
                             size="small"
                             variant="contained"
                             color="secondary"
-                            
+
                             // onClick={handleEdit}
                           >
-                            {theme.locale === 'uz' ? 'Tahrirlash':'Edit'}
+                            {theme.locale === "uz" ? "Tahrirlash" : "Edit"}
                           </Button>
                           <Button
                             size="small"
@@ -203,7 +229,7 @@ function UserPage(props) {
                             color="info"
                             // onClick={handleUnBlock}
                           >
-                            {theme.locale === 'uz' ? 'O\'qish':'Read'}
+                            {theme.locale === "uz" ? "O'qish" : "Read"}
                           </Button>
                           <Button
                             size="small"
@@ -211,7 +237,7 @@ function UserPage(props) {
                             color="error"
                             // onClick={handleDelete}
                           >
-                            {theme.locale === 'uz' ? 'O\'chirish':'Delete'}
+                            {theme.locale === "uz" ? "O'chirish" : "Delete"}
                           </Button>
                         </Box>
                       </TableCell>
@@ -270,6 +296,24 @@ function UserPage(props) {
               setReviewDetails({ ...reviewDetails, title: e.target.value })
             }
           />
+          <Box>
+            <FormControl fullWidth>
+              <Select
+                sx={{ height: "30px" }}
+                value={reviewDetails.category}
+                onChange={(e) =>
+                  setReviewDetails({
+                    ...reviewDetails,
+                    category: e.target.value,
+                  })
+                }
+              >
+                <MenuItem value={"movies"}>Movies</MenuItem>
+                <MenuItem value={"games"}>Games</MenuItem>
+                <MenuItem value={"books"}>Books</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
           <TextField
             id="outlined-multiline-static"
             label="Content"

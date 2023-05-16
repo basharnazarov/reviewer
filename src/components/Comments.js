@@ -85,11 +85,12 @@ function Comments({ reviewId, memberId }, props) {
   return (
     <Paper
       sx={{
-        width: "100%",
+        width: "95%",
         display: "flex",
         rowGap: "10px",
         flexDirection: "column",
         p: "20px",
+        
       }}
       elevation={3}
     >
@@ -126,7 +127,7 @@ function Comments({ reviewId, memberId }, props) {
                     alt="avatar"
                     src={`https://robohash.org/${item.id}`}
                   />
-                  <Typography variant="body1">{item.content}</Typography>
+                  <Typography variant="body1">[ { item.username } ]: {item.content}</Typography>
                 </Stack>
                 <Typography variant="caption" sx={{ float: "right" }}>
                   {theme.locale === "uz" ? "Yaratilgan sana" : "Posted on"}:{" "}

@@ -28,11 +28,13 @@ function MainLayout({ children }) {
   window.addEventListener("scroll", toggleVisible);
 
   return (
-    <Box>
+    <Box sx={{height:'100vh'}}>
       <Header />
-      <Box sx={{ maxWidth: "990px", m: "auto", p: "20px 0px" }}>{children}</Box>
+      <Box sx={{ maxWidth: "990px", m: "auto", p: "20px 0px" }}>
+        {children}
+        
+      </Box>
       <Footer />
-
       <ParticleBackground />
 
       <Slide direction="left" in={visible} mountOnEnter unmountOnExit>

@@ -70,7 +70,7 @@ function Review() {
         if (response.data.message) {
           console.log(response.data.message);
         } else {
-          //  console.log('liked')
+           console.log('liked')
         }
       })
       .catch((err) => console.error(err));
@@ -167,13 +167,13 @@ function Review() {
                     : "Please, sign up for leaving a like!"
                 }
               >
-                <IconButton onClick={() => handleCreateLike("1")}>
+                <IconButton onClick={() => handleCreateLike(1)}>
                   <Badge badgeContent={4} color="primary">
                     <ThumbUpIcon fontSize="medium" />
                   </Badge>
                 </IconButton>
               </Tooltip>
-              <IconButton onClick={() => handleCreateLike("0")}>
+              <IconButton onClick={() => handleCreateLike(0)}>
                 <Badge badgeContent={4} color="primary">
                   <ThumbDownIcon fontSize="medium" />
                 </Badge>

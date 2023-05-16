@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useAuth } from "../auth/auth";
 import { useTheme } from "@mui/material/styles";
+import Chip from "@mui/material/Chip";
 
 function ReviewCard(props) {
   const navigate = useNavigate();
@@ -48,7 +49,9 @@ function ReviewCard(props) {
             navigate("/review");
           }}
         >
-          {details.title}
+          {details.title}  
+        <Chip label={details.category} sx={{ml: '8px'}}/>
+          
         </Typography>
 
         <Typography variant="body2" color="text.secondary">
